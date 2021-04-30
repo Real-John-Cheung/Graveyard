@@ -1,0 +1,19 @@
+{
+  "name": "graveyard",
+  "version": "1.0.0",
+  "description": "Internet gravedigger bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Real-John-Cheung/Graveyard.git"
+  },
+  "author": "JohnC",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Real-John-Cheung/Graveyard/issues"
+  },
+  "homepage": "https://github.com/Real-John-Cheung/Graveyard#readme"
+}
