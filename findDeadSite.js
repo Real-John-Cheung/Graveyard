@@ -19,8 +19,63 @@ export async function isOnlineNow(url, debug) {
         }
         let sta = resp.status.toString();
         if (debug) console.log("Status code for " + url + " is " + sta);
-        return !/^[45]/.test(sta);
+        return !/^[45][0-9][0-9]$/.test(sta);
     });
     return b
+}
+
+export async function timeTravel(url, debug) {
+    let uri = url;
+    let s = "http://labs.mementoweb.org/timemap/json/" + uri;
+    let timemap = await get(s).then(resp => {
+        if (resp === undefined) {
+            console.error("Undefined response");
+            return undefined;
+        } else if (!/^[2][0-9][0-9]$/.test(resp.status.toString())) {
+            if (debug) console.log("No history found");
+            return false;
+        } else {
+            let raw = resp.data;
+            return raw.timemap_index;
+        }
+    });
+    if (timemap === undefined) return undefined;
+    if (timemap === false) return false;
+    if (!Array.isArray(timemap)) {
+        if (debug) console.error("Unknown Error");
+        return undefined;
+    }
+    let first_uri = timemap[0].uri;
+    let last_uri = timemap[timemap.length - 1].uri;
+    let first_snap = await get(first_uri).then(r => {
+        if (r === undefined) {
+            console.error("Undefined response in uri");
+            return undefined;
+        } else if (!/^[2][0-9][0-9]$/.test(r.status.toString())) {
+            if (debug) console.log("Invaild entries in history");
+            return false;
+        } else {
+            let li = r.data.mementos.list;
+            let da = li[0].datetime;
+            let u = li[0].uri;
+            return { date: da, uri: u }
+        }
+    });
+    let latest_snap = await get(last_uri).then(r => {
+        if (r === undefined) {
+            console.error("Undefined response in uri");
+            return undefined;
+        } else if (!/^[2][0-9][0-9]$/.test(r.status.toString())) {
+            if (debug) console.log("Invaild entries in history");
+            return false;
+        } else {
+            let li = r.data.mementos.list;
+            let da = li[li.length - 1].datetime;
+            let u = li[li.length - 1].uri;
+            return { date: da, uri: u }
+        }
+    });
+    let toReturn = { first: first_snap, last: latest_snap };
+    return toReturn
 }
 

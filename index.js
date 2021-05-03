@@ -1,4 +1,4 @@
 import createFingerPrint from "./fingerPrint.js"
-import { isOnlineNow } from "./findDeadSite.js"
+import { isOnlineNow, timeTravel } from "./findDeadSite.js"
 
-console.log(await isOnlineNow("https://www.google.com"));
+console.log(await timeTravel("http://shadksadhjksadhskad.co"));
