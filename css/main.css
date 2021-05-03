@@ -1,3 +1,125 @@
+@font-face {
+    font-family: "Syne Mono";
+    font-weight: 400;
+    font-style: normal;
+    src: url('https://fonts.gstatic.com/s/synemono/v5/K2FzfZNHj_FHBmRbFvHDJaqj.woff') format("woff"),
+         url('https://fonts.gstatic.com/s/synemono/v3/@CgsKCVN5bmUgTW9ubxAJIAU=.woff2') format('woff2'),
+         url('https://fonts.gstatic.com/s/synemono/v5/K2FzfZNHj_FHBmRbFvHDJaqg.ttf') format("turetype"),
+         url('https://fonts.gstatic.com/s/synemono/v5/K2FzfZNHj_FHBmRbFvHDJaqh.eot') format("eot");
+}
+
+@font-face {
+    font-family: 'Duerer Gotisch';
+    font-weight: 400;
+    font-style: normal;
+    src: url('../res/duerergotisch.regular.ttf') format('turetype'),
+         url('../res/duerergotisch.regular-webfont.woff2') format('woff2'),
+         url('../res/duerergotisch.regular-webfont.woff') format('woff')
+         ;
+}
+
 html,body{
     background-color: black;
+    color: white;
+    font-family: 'Syne Mono';
+    font-size: 12pt;
+}   
+
+.wrapper{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    width: 100%;
 }
+
+#title{
+    padding-top: 20px;
+    width: "80%";
+    margin: auto;
+    height: 100px;
+    font-family: 'Duerer Gotisch';
+    font-size: 80pt;
+}
+
+#title img{
+    padding-right: 10px;
+}
+#title a{
+    color: white;
+    text-decoration: none;
+}
+
+#navBar{
+    padding-top: 10px;
+    margin: auto;
+    width: "50%";
+}
+
+#navBar a{
+    color: white;
+    text-decoration: underline;
+    text-underline-position: under;
+    transition: all ease-in-out 0.2s;
+}
+
+#navBar a:hover{
+    color: grey;
+    text-decoration: underline;
+    text-decoration-thickness: 3pt;
+}
+
+
+#agreement{
+    display: none;
+	position: absolute;
+	top: 10%;
+	left: 10%;
+	width: 80%;
+	height: 80%;
+	border: 3px solid rgb(51, 51, 51);
+	background-color: black;
+	z-index: 11;
+    font-size: 12pt;
+}
+
+#agreement a{
+    color: white;
+    text-decoration: underline;
+    text-underline-position: under;
+    transition: all ease-in-out 0.2s;
+}
+
+#agreement a:hover{
+    color: grey;
+    text-decoration: underline;
+    text-decoration-thickness: 2pt;
+}
+
+#closeAgreement{
+    padding: 5px;
+    text-align: right;
+    font-size: 10pt;
+    height: auto;
+}
+
+#agreementContent{
+    padding-left: 30px;
+    padding-right: 30px;
+    overflow-y: auto;
+    height: 90%;
+}
+
+#shadow{
+    display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	z-index: 10;
+	-webkit-opacity: 0.6;
+	opacity: .60;
+}
+
+
