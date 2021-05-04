@@ -10,7 +10,8 @@ async function judgeIfDead(url) {
     t.fingerPrint = createFingerPrint(url);
     let d = new Date()
     t.time = d.toUTCString();
+    t.domain = url.trim().replace(/http[s]?:\/\//, "").replace(/\/,*$/,"");
     return t;
 }
 
-console.log(await judgeIfDead("https://cnn.com"))
+console.log(await judgeIfDead("https://cnn.com"));
