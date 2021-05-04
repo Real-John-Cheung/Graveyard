@@ -115,14 +115,15 @@ function createGraveyard(objs, debug) {
         //date of birth
         let dob = document.createElement("p");
         dob.setAttribute("class", "detailDob");
-        dob.innerHTML = "<b> Born on </b><a href=\""+ obj.first.uri +"\" target=\"_blank\">" + firstDate + "</a>";
+        dob.innerHTML = "<b> Logged in on </b><a href=\""+ obj.first.uri +"\" target=\"_blank\">" + firstDate + "</a>";
         d.appendChild(dob);
         //date of death
         let dod = document.createElement("p");
         dod.setAttribute("class", "detailDod");
-        dod.innerHTML = "<b> Died on </b><a href=\""+ obj.last.uri +"\" target=\"_blank\">" + lastDate + "</a>";
+        dod.innerHTML = "<b> Logged out on </b><a href=\""+ obj.last.uri +"\" target=\"_blank\">" + lastDate + "</a>";
         d.appendChild(dod);
         //made by 
+        //TODOs
         $("body").append(d);
     });
 }
