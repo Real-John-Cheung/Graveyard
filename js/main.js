@@ -20,7 +20,7 @@ function getJson(url) {
     request.onload = () => {
         const resp = request.response;
         if (/^2[0-9][0-9]$/.test(request.status.toString())) {
-            createGraveyard(resp);
+            createGraveyard(resp, 1);
         } else {
             handleLoadError()
         }
@@ -32,8 +32,8 @@ function getJson(url) {
     request.send();
 }
 
-function createGraveyard() {
-    
+function createGraveyard(obj, debug) {
+    if (debug) console.log(obj);
 }
 
 function handleLoadError() {
