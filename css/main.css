@@ -68,6 +68,12 @@ html,body{
     text-decoration-thickness: 3pt;
 }
 
+#main {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    width: 80%;
+}
 
 #agreement{
     display: none;
@@ -106,7 +112,7 @@ html,body{
     padding-left: 30px;
     padding-right: 30px;
     overflow-y: auto;
-    height: 90%;
+    height: 80%;
 }
 
 #shadow{
