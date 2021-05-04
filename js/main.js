@@ -54,8 +54,11 @@ function createGraveyard(objs, debug) {
         let id = i;
         let idds = "gsd" + i;
         let name = obj.domain;
-        let firstDateY = obj.first.date.split("-")[0];
-        let lastDateY = obj.last.date.split("-")[0];
+        let firstDate = obj.first.date.split("T")[0];
+        let firstDateY = obj.first.date.split("-")[0];;
+        let rawD = obj.last.date.split("T")[0];
+        let lastDate = (new Date(rawD.split("-")[0], parseInt(rawD.split("-")[1]) - 1, parseInt(rawD.split("-")[2]) + 2)).toISOString().split("T")[0];
+        let lastDateY = lastDate.split("-")[0];
         //create elements
         let a = document.createElement("a");
         a.href = "javascript:void(0)"
@@ -66,21 +69,60 @@ function createGraveyard(objs, debug) {
         canvas.height = 150;
         //draw
         let ctx = canvas.getContext('2d');
+        //bg
         //ctx.drawImage($("#gsbg"), 0, 0, 100, 150);
+        //icon 
+        //TODOS
+        //texts
         ctx.textAlign = 'center';
         ctx.font = "12px 'Syne Mono'"
         ctx.fillStyle = "white";
         ctx.fillText(name, 50, 75);
         ctx.fillText(firstDateY + " ~ " + lastDateY, 50, 125);
-        //
+        // -- 
         a.appendChild(canvas);
         $("#main").append(a);
+
         //append graveStone detail
         let d = document.createElement("div");
         d.setAttribute("class", "gravestoneDetail");
         d.id = idds;
-        //append childs for details
+        //append children of detail
+        //exit button
+        let exitButtonwrapper = document.createElement("p");
+        exitButtonwrapper.setAttribute("style", "text-align: right;padding-right: 20px;");
+        let exitButton = document.createElement("a");
+        exitButton.href = "javascript:void(0)"
+        exitButton.setAttribute("onclick", `hideGravestoneDetail("${idds}")`);
+        let exitButtonImg = document.createElement("img");
+        exitButtonImg.src = "./res/closeButton.png";
+        exitButtonImg.width = "20";
+        exitButtonImg.height = "20";
+        exitButtonwrapper.appendChild(exitButton)
+        exitButton.appendChild(exitButtonImg);
+        d.appendChild(exitButtonwrapper);
+        //icon & domain
+        let icondomainwrapper = document.createElement("div");
+        icondomainwrapper.setAttribute("class", "icondomainWrapper");
+        //icon
         //TODOS
+        //domain
+        let domain = document.createElement("p");
+        domain.setAttribute("class", "detailDomain");
+        domain.innerHTML = "<b>" + name + "</b>";
+        icondomainwrapper.appendChild(domain);
+        d.appendChild(icondomainwrapper);
+        //date of birth
+        let dob = document.createElement("p");
+        dob.setAttribute("class", "detailDob");
+        dob.innerHTML = "<b> Born on </b><a href=\""+ obj.first.uri +"\" target=\"_blank\">" + firstDate + "</a>";
+        d.appendChild(dob);
+        //date of death
+        let dod = document.createElement("p");
+        dod.setAttribute("class", "detailDod");
+        dod.innerHTML = "<b> Died on </b><a href=\""+ obj.last.uri +"\" target=\"_blank\">" + lastDate + "</a>";
+        d.appendChild(dod);
+        //made by 
         $("body").append(d);
     });
 }

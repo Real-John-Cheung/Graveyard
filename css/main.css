@@ -53,6 +53,51 @@ html,body{
     font-size: 12pt;
 }
 
+.gravestoneDetail a{
+    color: white;
+    text-decoration: underline;
+    text-underline-position: under;
+    transition: all ease-in-out 0.2s;
+}
+
+.gravestoneDetail a:hover{
+    color: grey;
+    text-decoration: underline;
+    text-decoration-thickness: 3pt;
+}
+
+.icondomainWrapper{
+    display: block;
+    margin: auto;
+    padding: 20px;
+    width: 90%;
+    height: 30%;
+}
+
+.detailDomain{
+    font-size: 20pt;
+    padding-left: 20px;
+    width: 50%;
+}
+
+.detailDob{
+    font-size: 20pt;
+    padding-left: 20px;
+    width: 80%;
+    text-align: left;
+    margin: auto;
+    padding-bottom: 20px;
+}
+
+.detailDod{
+    padding-top: 20px;
+    font-size: 20pt;
+    padding-left: 20px;
+    width: 80%;
+    text-align: left;
+    margin: auto;
+}
+
 #title{
     padding-top: 20px;
     width: "80%";
