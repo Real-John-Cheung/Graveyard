@@ -1,5 +1,19 @@
 let dataJSON;
 let gsbg = new Image();
+const monthTable = {
+    "01": "JAN",
+    "02": "FEB",
+    "03": "MAR",
+    "04": "APR",
+    "05": "MAY",
+    "06": "JUN",
+    "07": "JUL",
+    "08": "AUG",
+    "09": "SEP",
+    "10": "OCT",
+    "11": "NOV",
+    "12": "DEC"
+}
 
 function displayAgreement() {
     document.getElementById("agreement").style.display = "block";
@@ -65,20 +79,24 @@ function createGraveyard(objs, debug) {
         a.setAttribute("onclick", `showGravestoneDetail("${idds}")`);
         a.setAttribute("class", "gravestone");
         let canvas = document.createElement("canvas");
-        canvas.width = 100;
-        canvas.height = 150;
+        canvas.setAttribute("class", "canvas")
+        canvas.width = 160;
+        canvas.height = 160;
         //draw
         let ctx = canvas.getContext('2d');
         //bg
-        //ctx.drawImage($("#gsbg"), 0, 0, 100, 150);
+        let img = $("#gsbg")[0];
+        //ctx.drawImage(img, 0, 0, canvas.width, canvas.height);//ugly :(
         //icon 
         //TODOS
+        let iconInfo = genIcon(obj.fingerPrint);
         //texts
         ctx.textAlign = 'center';
-        ctx.font = "12px 'Syne Mono'"
+        ctx.font = "12px 'Benny Harvey RIP'"
         ctx.fillStyle = "white";
-        ctx.fillText(name, 50, 75);
-        ctx.fillText(firstDateY + " ~ " + lastDateY, 50, 125);
+        ctx.fillText(name, canvas.width / 2, canvas.height * 0.6, 140);
+        ctx.font = "14px 'Benny Harvey RIP'";
+        ctx.fillText(firstDateY + "  ~  " + lastDateY, canvas.width/2, canvas.height*0.75);
         // -- 
         a.appendChild(canvas);
         $("#main").append(a);
@@ -112,17 +130,26 @@ function createGraveyard(objs, debug) {
         domain.innerHTML = "<b>" + name + "</b>";
         icondomainwrapper.appendChild(domain);
         d.appendChild(icondomainwrapper);
+        //fingerPrint
+        let fingerprint = document.createElement("p");
+        fingerprint.setAttribute("class", "detailFingerPrint");
+        fingerprint.innerHTML = "FingerPrint: " + obj.fingerPrint;
+        d.appendChild(fingerprint);
         //date of birth
         let dob = document.createElement("p");
         dob.setAttribute("class", "detailDob");
-        dob.innerHTML = "<b> Logged in on </b><a href=\""+ obj.first.uri +"\" target=\"_blank\">" + firstDate + "</a>";
+        dob.innerHTML = "<a href=\""+ obj.first.uri +"\" target=\"_blank\">" + processDate(firstDate) + "</a> <b> Logged in</b>";
         d.appendChild(dob);
         //date of death
         let dod = document.createElement("p");
         dod.setAttribute("class", "detailDod");
-        dod.innerHTML = "<b> Logged out on </b><a href=\""+ obj.last.uri +"\" target=\"_blank\">" + lastDate + "</a>";
+        dod.innerHTML = "<a href=\""+ obj.last.uri +"\" target=\"_blank\">" + processDate(lastDate) + "</a> <b> Logged out</b>";
         d.appendChild(dod);
         //made by 
+        let madetime = document.createElement("p");
+        madetime.setAttribute("class", "madetime");
+        madetime.innerHTML = "Forever memorized<br> - " + processTime(obj.time);
+        d.appendChild(madetime);
         //TODOs
         $("body").append(d);
     });
@@ -130,4 +157,24 @@ function createGraveyard(objs, debug) {
 
 function handleLoadError() {
     $("#main").append("<p style=\"color: rgb(165,3,18); margin: auto;\"><br><br><b><i>Fail to load the data, please try to refresh the page.</i></b><p>");
+}
+
+function processDate(dateString) {
+    if (typeof dateString !== 'string') return "";
+    let a = dateString.split("-");
+    let s = a[0];
+    let m = monthTable[a[1]];
+    s = m + " " + s;
+    s = a[2].replace(/^0([0-9])$/, "$1") + " " + s;
+    return s;
+}
+
+function processTime(timeString) {
+    if (typeof timeString !== 'string') return "";
+    let a = timeString.split(" ");
+    return a[1].replace(/^0([0-9])$/, "$1") + " " + a[2] + " " + a[3];
+}
+
+function genIcon(fp) {
+    
 }

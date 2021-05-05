@@ -18,6 +18,23 @@
          ;
 }
 
+@font-face {
+    font-family: 'Benny Harvey RIP';
+    font-weight: 400;
+    font-style: normal;
+    src: url("../res/bennyharveyrip-regular-webfont.woff") format('woff'),
+         url("../res/bennyharveyrip-regular-webfont.woff2") format('woff2');
+}
+
+@font-face {
+    font-family: 'Modern Antiqua';
+    font-weight: 400;
+    font-style: normal;
+    src: url("../res/ModernAntiqua-Regular.ttf") format("truetype"),
+         url("../res/modernantiqua-regular-webfont.woff2") format("woff2"),
+         url("../res/modernantiqua-regular-webfont.woff") format("woff");
+}
+
 html,body{
     background-color: black;
     color: white;
@@ -33,14 +50,20 @@ html,body{
 }
 
 .gravestone{
+    font-family: 'Benny Harvey RIP';
     margin: auto;
     padding-left: 20px;
     padding-right: 20px;
-    width: 100px;
+    width: 180px;
     display: inline-block;
 }
 
+.canvas{
+    margin-left: 5%;
+}
+
 .gravestoneDetail{
+    font-family: 'Modern Antiqua';
     display: none;
 	position: absolute;
 	top: 20%;
@@ -80,6 +103,16 @@ html,body{
     width: 50%;
 }
 
+.detailFingerPrint{
+    font-size: 16pt;
+    padding-left: 20px;
+    width: 80%;
+    text-align: left;
+    margin: auto;
+    padding-bottom: 20px;
+    word-break: break-all;
+}
+
 .detailDob{
     font-size: 20pt;
     padding-left: 20px;
@@ -95,6 +128,15 @@ html,body{
     padding-left: 20px;
     width: 80%;
     text-align: left;
+    margin: auto;
+}
+
+.madetime{
+    padding-top: 20px;
+    font-size: 16pt;
+    padding-left: 20px;
+    width: 80%;
+    text-align: right;
     margin: auto;
 }
 
@@ -138,6 +180,8 @@ html,body{
     display: block;
     margin: auto;
     width: 80%;
+    padding-top: 50px;
+    padding-bottom: 30px;
 }
 
 #agreement{
