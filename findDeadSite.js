@@ -76,6 +76,25 @@ export async function timeTravel(url, debug) {
         }
     });
     let toReturn = { first: first_snap, last: latest_snap };
+    let snapData = await getInfo(toReturn);
+    toReturn.first.data = snapData.firstData;
+    toReturn.last.data = snapData.lastData;
     return toReturn
+}
+
+export async function getInfo(obj) {
+    let fURI = obj.first.uri;
+    let lURI = obj.last.uri;
+    let resf = await get(fURI).then(resp => {
+        if (!/^2[0-9][0-9]$/.test(resp.status.toString())) return { error: "request fail with code " + resp.status };
+
+        return resp.data;
+    });
+    let resl = await  get(lURI).then(resp => {
+        if (!/^2[0-9][0-9]$/.test(resp.status.toString())) return { error: "request fail with code " + resp.status };
+
+        return resp.data;
+    });
+    return {firstData: resf, lastData:resl};
 }
 
