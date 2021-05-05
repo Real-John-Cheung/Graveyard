@@ -1,6 +1,6 @@
 import createFingerPrint from "./fingerPrint.js"
 import { isOnlineNow, timeTravel } from "./findDeadSite.js"
-import { countImgTag } from "./analyzer.js"
+import { analyze } from "./analyzer.js"
 
 async function judgeIfDead(url) {
     let isOn = await isOnlineNow(url);
@@ -12,12 +12,8 @@ async function judgeIfDead(url) {
     let d = new Date()
     t.time = d.toUTCString();
     t.domain = url.trim().replace(/http[s]?:\/\//, "").replace(/\/,*$/, "");
-    t.first.statics = {
-        noOfImg: countImgTag(t.first.data)
-    };
-    t.last.statics = {
-        noOfImg: countImgTag(t.last.data)
-    };
+    t.first.statics = analyze(t.first.data);
+    t.last.statics = analyze(t.last.data);
     return t;
 }
 
