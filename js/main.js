@@ -84,19 +84,22 @@ function createGraveyard(objs, debug) {
         canvas.height = 160;
         //draw
         let ctx = canvas.getContext('2d');
-        //bg
-        let img = $("#gsbg")[0];
+
+        //bg ?
+        //let img = $("#gsbg")[0];
         //ctx.drawImage(img, 0, 0, canvas.width, canvas.height);//ugly :(
+        
         //icon 
         //TODOS
         let iconInfo = genIcon(obj.fingerPrint);
+
         //texts
         ctx.textAlign = 'center';
-        ctx.font = "12px 'Benny Harvey RIP'"
+        ctx.font = '14px "Benny Harvey RIP"'
         ctx.fillStyle = "white";
-        ctx.fillText(name, canvas.width / 2, canvas.height * 0.6, 140);
-        ctx.font = "14px 'Benny Harvey RIP'";
-        ctx.fillText(firstDateY + "  ~  " + lastDateY, canvas.width/2, canvas.height*0.75);
+        ctx.fillText(name, canvas.width / 2, canvas.height * 0.7, 140);
+        ctx.font = "16px 'Benny Harvey RIP'";
+        ctx.fillText(firstDateY + "  ~  " + lastDateY, canvas.width/2, canvas.height*0.85);
         // -- 
         a.appendChild(canvas);
         $("#main").append(a);
@@ -143,11 +146,29 @@ function createGraveyard(objs, debug) {
         dob.setAttribute("class", "detailDob");
         dob.innerHTML = "<a href=\""+ obj.first.uri +"\" target=\"_blank\">" + processDate(firstDate) + "</a> <b> Logged in</b>";
         dc.appendChild(dob);
+        let bsta = document.createElement("p");
+        bsta.setAttribute("class", "statics");
+        let bstas = "";
+        let bstatics = obj.first.statics;
+        bstas += staticsToInnerHTML(bstatics) || "";
+        if (bstas.length > 0) {
+            bsta.innerHTML = bstas;
+            dc.appendChild(bsta);
+        }
         //date of death
         let dod = document.createElement("p");
         dod.setAttribute("class", "detailDod");
         dod.innerHTML = "<a href=\""+ obj.last.uri +"\" target=\"_blank\">" + processDate(lastDate) + "</a> <b> Logged out</b>";
         dc.appendChild(dod);
+        let dsta = document.createElement("p");
+        dsta.setAttribute("class", "statics");
+        let dstas = "";
+        let dstatics = obj.last.statics;
+        dstas += staticsToInnerHTML(dstatics) || "";
+        if (dstas.length > 0) {
+            dsta.innerHTML = dstas;
+            dc.appendChild(dsta);
+        }
         //madetime
         let madetime = document.createElement("p");
         madetime.setAttribute("class", "madetime");
@@ -183,4 +204,22 @@ function processTime(timeString) {
 
 function genIcon(fp) {
     
+}
+
+function staticsToInnerHTML(statics) {
+    if (Object.keys(statics).length == 0) return "";
+    let toReturn = "";
+    if (statics.hasOwnProperty("noOfImg") || statics.hasOwnProperty("noOfLink") || statics.hasOwnProperty("wordCount")) {
+        toReturn += "With ";
+        if (statics.hasOwnProperty("wordCount")) toReturn += statics.wordCount + " words";
+        if (statics.hasOwnProperty("noOfImg")) toReturn += (toReturn.length > 5 ? " , " : "") + statics.noOfImg + " images";
+        if (statics.hasOwnProperty("noOfLink")) toReturn += (toReturn.length > 5 ? " , " : "") + statics.noOfLink + " links";
+        toReturn += ".<br><br>";
+    }
+    //tem should have some generated text with it
+    //TODOs
+    if (statics.hasOwnProperty("sentiment")) {
+        toReturn += "Sentiment: " + statics.sentiment + "<br>";
+    }
+    return toReturn;
 }
