@@ -133,7 +133,7 @@ function createGraveyard(objs, debug) {
         let domain = document.createElement("p");
         domain.setAttribute("class", "detailDomain");
         domain.innerHTML = "<b>" + name + "</b>";
-            //lang
+        //lang
         let siteLang = getLang(obj);
         if (siteLang !== undefined) {
             domain.innerHTML += "<br><span style=\"font-size: small;\">Major Language: "+siteLang+"</span><br>"
@@ -143,7 +143,7 @@ function createGraveyard(objs, debug) {
         //fingerPrint
         let fingerprint = document.createElement("p");
         fingerprint.setAttribute("class", "detailFingerPrint");
-        fingerprint.innerHTML = "FingerPrint: " + obj.fingerPrint;
+        fingerprint.innerHTML = "FingerPrint: <br>" + obj.fingerPrint;
         dc.appendChild(fingerprint);
         //date of birth
         let dob = document.createElement("p");
