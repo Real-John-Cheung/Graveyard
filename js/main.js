@@ -108,7 +108,7 @@ function createGraveyard(objs, debug) {
         //append children of detail
         //exit button
         let exitButtonwrapper = document.createElement("p");
-        exitButtonwrapper.setAttribute("style", "text-align: right;padding-right: 20px;");
+        exitButtonwrapper.setAttribute("style", "text-align: right;padding-right: 20px;height:8%");
         let exitButton = document.createElement("a");
         exitButton.href = "javascript:void(0)"
         exitButton.setAttribute("onclick", `hideGravestoneDetail("${idds}")`);
@@ -119,6 +119,9 @@ function createGraveyard(objs, debug) {
         exitButtonwrapper.appendChild(exitButton)
         exitButton.appendChild(exitButtonImg);
         d.appendChild(exitButtonwrapper);
+        //create content wrapper
+        let dc = document.createElement("div");
+        dc.setAttribute("class", "gravestoneDetailContent");
         //icon & domain
         let icondomainwrapper = document.createElement("div");
         icondomainwrapper.setAttribute("class", "icondomainWrapper");
@@ -129,28 +132,31 @@ function createGraveyard(objs, debug) {
         domain.setAttribute("class", "detailDomain");
         domain.innerHTML = "<b>" + name + "</b>";
         icondomainwrapper.appendChild(domain);
-        d.appendChild(icondomainwrapper);
+        dc.appendChild(icondomainwrapper);
         //fingerPrint
         let fingerprint = document.createElement("p");
         fingerprint.setAttribute("class", "detailFingerPrint");
         fingerprint.innerHTML = "FingerPrint: " + obj.fingerPrint;
-        d.appendChild(fingerprint);
+        dc.appendChild(fingerprint);
         //date of birth
         let dob = document.createElement("p");
         dob.setAttribute("class", "detailDob");
         dob.innerHTML = "<a href=\""+ obj.first.uri +"\" target=\"_blank\">" + processDate(firstDate) + "</a> <b> Logged in</b>";
-        d.appendChild(dob);
+        dc.appendChild(dob);
         //date of death
         let dod = document.createElement("p");
         dod.setAttribute("class", "detailDod");
         dod.innerHTML = "<a href=\""+ obj.last.uri +"\" target=\"_blank\">" + processDate(lastDate) + "</a> <b> Logged out</b>";
-        d.appendChild(dod);
-        //made by 
+        dc.appendChild(dod);
+        //madetime
         let madetime = document.createElement("p");
         madetime.setAttribute("class", "madetime");
         madetime.innerHTML = "Forever memorized<br> - " + processTime(obj.time);
-        d.appendChild(madetime);
+        dc.appendChild(madetime);
         //TODOs
+
+        //final
+        d.appendChild(dc);
         $("body").append(d);
     });
 }

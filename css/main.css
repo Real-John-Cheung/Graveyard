@@ -76,6 +76,11 @@ html,body{
     font-size: 12pt;
 }
 
+.gravestoneDetailContent{
+    overflow-y: auto;
+    height: 90%;
+}
+
 .gravestoneDetail a{
     color: white;
     text-decoration: underline;
