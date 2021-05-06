@@ -23,10 +23,13 @@ async function test() {
 }
 
 async function createTestJSON() {
+    let a = [];
     let o = await judgeIfDead("https://fake.com", true);
-    
+    a.push(o);
+    let o2 = await judgeIfDead("https://sun.com", true);
+    a.push(o2);
     import('fs').then(fs => {
-        fs.writeFileSync('./test.json', JSON.stringify(o));
+        fs.writeFileSync('./test.json', JSON.stringify(a));
     });
 
 }
