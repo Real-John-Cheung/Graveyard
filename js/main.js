@@ -1,5 +1,3 @@
-let dataJSON;
-let gsbg = new Image();
 const monthTable = {
     "01": "JAN",
     "02": "FEB",
@@ -37,7 +35,7 @@ function hideGravestoneDetail(ids) {
 
 // generate the website
 $(document).ready(() => {
-    getJson('./test.json');
+    document.fonts.ready.then(getJson("./test.json"))
 });
 
 function getJson(url) {
@@ -47,7 +45,6 @@ function getJson(url) {
     request.onload = () => {
         const resp = request.response;
         if (/^2[0-9][0-9]$/.test(request.status.toString())) {
-            dataJSON = resp; // backup one for window resize
             createGraveyard(resp, 1);
         } else {
             handleLoadError()
@@ -62,6 +59,7 @@ function getJson(url) {
 
 function createGraveyard(objs, debug) {
     if (debug) console.log("create graveyard according to following data", objs);
+    if (debug) console.log(document.fonts)
     objs.forEach((obj, i) => {
         //create each gravestone
         //infos
@@ -84,6 +82,7 @@ function createGraveyard(objs, debug) {
         canvas.height = 160;
         //draw
         let ctx = canvas.getContext('2d');
+        ctx.font = 'Benny Harvey RIP';
 
         //bg ?
         //let img = $("#gsbg")[0];
@@ -134,6 +133,11 @@ function createGraveyard(objs, debug) {
         let domain = document.createElement("p");
         domain.setAttribute("class", "detailDomain");
         domain.innerHTML = "<b>" + name + "</b>";
+            //lang
+        let siteLang = getLang(obj);
+        if (siteLang !== undefined) {
+            domain.innerHTML += "<br><span style=\"font-size: small;\">Major Language: "+siteLang+"</span><br>"
+        }
         icondomainwrapper.appendChild(domain);
         dc.appendChild(icondomainwrapper);
         //fingerPrint
@@ -222,4 +226,35 @@ function staticsToInnerHTML(statics) {
         toReturn += "Sentiment: " + statics.sentiment + "<br>";
     }
     return toReturn;
+}
+
+function getLang(obj) {
+    if (!obj.first.hasOwnProperty("statics") && !obj.last.hasOwnProperty("statics")) return undefined;
+    if (!obj.first.statics.hasOwnProperty("langs") && !obj.last.statics.hasOwnProperty("langs")) return undefined;
+    let langs = {}
+    if (obj.first.statics.langs !== undefined) {
+        obj.first.statics.langs.forEach(l => {
+            if (!langs.hasOwnProperty(l.toLowerCase())) {
+                langs[l.toLowerCase()] = 1;
+            } else {
+                langs[l.toLowerCase()] += 1;
+            }
+        });
+    }
+    if (obj.last.statics.langs !== undefined) {
+        obj.last.statics.langs.forEach(l => {
+            if (!langs.hasOwnProperty(l.toLowerCase())) {
+                langs[l.toLowerCase()] = 1;
+            } else {
+                langs[l.toLowerCase()] += 1;
+            }
+        });
+    }
+    let sortable = [];
+    Object.keys(langs).forEach(l => {
+        sortable.push([l, langs[l]]);
+    });
+    if (sortable.length == 0) return undefined;
+    sortable.sort((a, b) => { return b[1] - a[1]; });
+    return sortable[0][0].charAt(0).toUpperCase() + sortable[0][0].slice(1);
 }
