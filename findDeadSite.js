@@ -25,6 +25,7 @@ export async function isOnlineNow(url, debug) {
 }
 
 export async function timeTravel(url, debug) {
+    //TODOs: redo this
     let uri = url;
     let s = "http://labs.mementoweb.org/timemap/json/" + uri;
     let timemap = await get(s).then(resp => {
@@ -36,50 +37,85 @@ export async function timeTravel(url, debug) {
             return false;
         } else {
             let raw = resp.data;
-            return raw.timemap_index;
+            return raw;
         }
     });
-    if (timemap === undefined) return undefined;
-    if (timemap === false) return false;
-    if (!Array.isArray(timemap)) {
-        if (debug) console.error("Unknown Error");
-        return undefined;
+    if (timemap === undefined || timemap === false) {
+        // try DIY
+        s = "http://timetravel.mementoweb.org/timemap/json/" + uri;
+        timemap = await get(s).then(resp => {
+            if (resp === undefined) {
+                console.error("Undefined response");
+                return undefined;
+            } else if (!/^[2][0-9][0-9]$/.test(resp.status.toString())) {
+                if (debug) console.log("No history found");
+                return false;
+            } else {
+                let raw = resp.data;
+                return raw;
+            }
+        });
+        if (timemap === undefined) return undefined;
+        if (timemap === false) return false;
+        //TODOs
+        timemap.forEach(e => {
+            let eURI = e.uri;
+
+        });
+    };
+    /// continute process WDI
+    if (timemap.hasOwnProperty("timemap_index")) {
+        if (!Array.isArray(timemap.timemap_index)) {
+            if (debug) console.error("Unknown Error");
+            return undefined;
+        }
+        let list = timemap.timemap_index;
+        let first_uri = list[0].uri;
+        let last_uri = list[list.length - 1].uri;
+        let first_snap = await get(first_uri).then(r => {
+            if (r === undefined) {
+                console.error("Undefined response in uri");
+                return undefined;
+            } else if (!/^[2][0-9][0-9]$/.test(r.status.toString())) {
+                if (debug) console.log("Invaild entries in history");
+                return false;
+            } else {
+                let li = r.data.mementos.list;
+                let da = li[0].datetime;
+                let u = li[0].uri;
+                return { date: da, uri: u }
+            }
+        });
+        let latest_snap = await get(last_uri).then(r => {
+            if (r === undefined) {
+                console.error("Undefined response in uri");
+                return undefined;
+            } else if (!/^[2][0-9][0-9]$/.test(r.status.toString())) {
+                if (debug) console.log("Invaild entries in history");
+                return false;
+            } else {
+                let li = r.data.mementos.list;
+                let da = li[li.length - 1].datetime;
+                let u = li[li.length - 1].uri;
+                return { date: da, uri: u }
+            }
+        });
+        let toReturn = { first: first_snap, last: latest_snap };
+        let snapData = await getHTML(toReturn);
+        toReturn.first.data = snapData.firstData;
+        toReturn.last.data = snapData.lastData;
+        return toReturn;
+    } else if (timemap.hasOwnProperty("mementos")) {
+        // handle other kinds
+        let list = timemap.mementos.list;
+        let first_snap = { date: list[0].datetime, uri: list[0].uri };
+        let latest_snap = { date: list[list.length - 1].datetime, uri: list[list.length - 1].uri };
+        let toReturn = { first: first_snap, last: latest_snap };
+        let snapData = await getHTML(toReturn);
+        toReturn.first.data = snapData.firstData;
+        toReturn.last.data = snapData.lastData;
+        return toReturn;
     }
-    let first_uri = timemap[0].uri;
-    let last_uri = timemap[timemap.length - 1].uri;
-    let first_snap = await get(first_uri).then(r => {
-        if (r === undefined) {
-            console.error("Undefined response in uri");
-            return undefined;
-        } else if (!/^[2][0-9][0-9]$/.test(r.status.toString())) {
-            if (debug) console.log("Invaild entries in history");
-            return false;
-        } else {
-            let li = r.data.mementos.list;
-            let da = li[0].datetime;
-            let u = li[0].uri;
-            return { date: da, uri: u }
-        }
-    });
-    let latest_snap = await get(last_uri).then(r => {
-        if (r === undefined) {
-            console.error("Undefined response in uri");
-            return undefined;
-        } else if (!/^[2][0-9][0-9]$/.test(r.status.toString())) {
-            if (debug) console.log("Invaild entries in history");
-            return false;
-        } else {
-            let li = r.data.mementos.list;
-            let da = li[li.length - 1].datetime;
-            let u = li[li.length - 1].uri;
-            return { date: da, uri: u }
-        }
-    });
-    let toReturn = { first: first_snap, last: latest_snap };
-    let snapData = await getHTML(toReturn);
-    toReturn.first.data = snapData.firstData;
-    toReturn.last.data = snapData.lastData;
-    return toReturn
 }
 
 export async function getHTML(obj) {
