@@ -29,7 +29,7 @@ export function analyze(data) {
                 raw = raw.replace(/['"]/g, "");
                 raw = raw.trim();
                 lang = raw;
-                langs.push(LANGTABLE[raw] || raw);
+                langs.push(LANGTABLE[raw.slice(0,2)] || raw);
             });
             toReturn.langs = langs;
         }
