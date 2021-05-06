@@ -2,9 +2,9 @@ import createFingerPrint from "./fingerPrint.js"
 import { isOnlineNow, timeTravel } from "./findDeadSite.js"
 import { analyze } from "./analyzer.js"
 
-async function judgeIfDead(url) {
-    let isOn = await isOnlineNow(url);
-    //if (isOn) return false;
+async function judgeIfDead(url, skipOnlineCheck) {
+    let isOn = skipOnlineCheck ? false : await isOnlineNow(url);
+    if (isOn) return false;
     let t = await timeTravel(url);
     if (typeof t !== 'object') return t;
 
@@ -22,4 +22,13 @@ async function test() {
     return {first: o.first.statics, last: o.last.statics};
 }
 
-console.log(await test());
+async function createTestJSON() {
+    let o = await judgeIfDead("https://fake.com", true);
+    
+    import('fs').then(fs => {
+        fs.writeFileSync('./test.json', JSON.stringify(o));
+    });
+
+}
+
+createTestJSON();

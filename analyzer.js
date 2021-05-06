@@ -1,9 +1,25 @@
+import natural from 'natural'
+const wordTokenizer = new natural.WordTokenizer();
+const stemmer = natural.PorterStemmer;
+const Analyzer = natural.SentimentAnalyzer;
+const sentimentAnalyzers = {
+    'eu': new Analyzer("Basque", null, 'senticon'),
+    'ca': new Analyzer("Catalan", null, "senticon"),
+    'nl': new Analyzer("Dutch", stemmer, 'pattern'),
+    'en': new Analyzer("English", stemmer, "afinn"),
+    'fr': new Analyzer("French", stemmer, 'pattern'),
+    'gl': new Analyzer("Galician", null, 'senticon'),
+    'it': new Analyzer("Italian", stemmer, 'pattern'),
+    'es': new Analyzer("Spanish", stemmer, 'afinn')
+}
+
 export function analyze(data) {
     let toReturn = {};
     //no. of images
     let noOfImg = typeof data === 'string' ? (data.match(/< *img/g) || []).length : 0;
-    toReturn.noOfImg = noOfImg;
+    if (noOfImg > 0) toReturn.noOfImg = noOfImg;
     //languages
+    let lang; // backup one for later
     if (typeof data === 'string') {
         let languages = data.match(/lang *= *(['"a-zA-Z\-])+/g);
         if (languages) {
@@ -11,16 +27,46 @@ export function analyze(data) {
             languages.forEach(l => {
                 let raw = l.replace(/lang *= */, "");
                 raw = raw.replace(/['"]/g, "");
-                raw.trim();
+                raw = raw.trim();
+                lang = raw;
                 langs.push(LANGTABLE[raw] || raw);
             });
             toReturn.langs = langs;
         }
     }
-    //
+    // no of Links
+    let noOfLink = typeof data === 'string' ? (data.match(/< *a/g) || []).length : 0;
+    if (noOfLink > 0) toReturn.noOfLink = noOfLink;
+    // words count && sentiment check
+    if (typeof data === 'string') {
+        let arr = processHTML(data);
+        toReturn.wordCount = arr.length;
+        let useLang = lang ? lang.slice(0,2) : 'en'; //default = en
+        if (sentimentAnalyzers[useLang] !== undefined) toReturn.sentiment = sentimentAnalyzers[useLang].getSentiment(arr);
+    }
 
     return toReturn;
 }
+
+function processHTML(str) {
+    let raws = str;
+    raws = raws.replace(/<.*>/g, "");
+    let raw = wordTokenizer.tokenize(raws);
+    let cooked = [];
+    raw.forEach(t => {
+        if (/^<.*>$/.test(t.trim())) {
+            //is tag
+        } else if (/^[\p{P}|\+|-|<|>|\^|\$|\ufffd|`]*$/u.test(t.trim())) {
+            // is punct
+        } else if (/\n/.test(t.trim())) {
+            // is \n
+        } else {
+            cooked.push(t.trim());
+        }
+    });
+    return cooked;
+}
+
 
 const LANGTABLE = {
 ab: "Abkhazian",
