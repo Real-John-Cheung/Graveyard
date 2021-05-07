@@ -2,14 +2,10 @@ import natural from 'natural'
 import LangDetect from 'langdetect'
 import jsdom from 'jsdom'
 import RiTa from 'rita'
-import { ChineseTokenizer } from './chineseTokenizer/main.js'
-import fs from 'fs'
+import ChineseTokenizer from 'novel-segment'
 
-const CEDICT = fs.readFileSync("./chineseTokenizer/cedict.txt", "utf-8");
-const chTokenizer = new ChineseTokenizer(CEDICT);
-const chTokenize = (str) => {
-    return chTokenizer.tokenize(str).map(o => o.text);
-};
+const chTokenizer = new ChineseTokenizer();
+chTokenizer.useDefault();//load dict
 const { JSDOM } = jsdom;
 const stemmer = natural.PorterStemmer;
 const Analyzer = natural.SentimentAnalyzer;
@@ -68,7 +64,7 @@ export function analyze(data) {
             //chinese tokenizer 
             let str = arr.join("");
             str = str.replace(/\s/g, "");
-            wordcount = chTokenize(str).length;
+            wordcount = chTokenizer.doSegment(str, { simple: true, stripPunctuation: true } ).length;
         } else {
             //tokenize with RiTa
             wordcount = arr.length;
