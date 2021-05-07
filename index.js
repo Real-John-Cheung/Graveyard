@@ -17,8 +17,9 @@ async function confirmIfDead(url, skipOnlineCheck) {
     if (isOn) return false;
     let t = await timeTravel(url);
     if (typeof t !== 'object') return t;
+    let seed = t.first.data + t.last.data;
 
-    t.fingerPrint = createFingerPrint(url);
+    t.fingerPrint = createFingerPrint(seed);
     let d = new Date()
     t.time = d.toUTCString();
     t.domain = url.trim().replace(/http[s]?:\/\//, "").replace(/\/,*$/, "");
@@ -34,9 +35,9 @@ async function test() {
 
 async function createTestJSON() {
     let a = [];
-    let o = await confirmIfDead("kilopeople.com");
+    let o = await confirmIfDead("kilopeople.com", true);
     a.push(o);
-    let o2 = await confirmIfDead("chuganwang.com");
+    let o2 = await confirmIfDead("chuganwang.com", true);
     a.push(o2);
     import('fs').then(fs => {
         fs.writeFileSync('./test.json', JSON.stringify(a));

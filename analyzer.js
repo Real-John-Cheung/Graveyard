@@ -1,5 +1,16 @@
 import natural from 'natural'
-const wordTokenizer = new natural.WordTokenizer();
+import LangDetect from 'langdetect'
+import jsdom from 'jsdom'
+import RiTa from 'rita'
+import { ChineseTokenizer } from './chineseTokenizer/main.js'
+import fs from 'fs'
+
+const CEDICT = fs.readFileSync("./chineseTokenizer/cedict.txt", "utf-8");
+const chTokenizer = new ChineseTokenizer(CEDICT);
+const chTokenize = (str) => {
+    return chTokenizer.tokenize(str).map(o => o.text);
+};
+const { JSDOM } = jsdom;
 const stemmer = natural.PorterStemmer;
 const Analyzer = natural.SentimentAnalyzer;
 const sentimentAnalyzers = {
@@ -17,9 +28,14 @@ export function analyze(data) {
     let toReturn = {};
     //no. of images
     let noOfImg = typeof data === 'string' ? (data.match(/< *img/g) || []).length : 0;
-    if (noOfImg > 0) toReturn.noOfImg = noOfImg;
+    
+    // no of Links
+    let noOfLink = typeof data === 'string' ? (data.match(/< *a/g) || []).length : 0;
+    
     //languages
-    let lang; // backup one for later
+    let rawlangs = []; // backup one for later
+    let fullLangs = []; // full names of the languages
+    let wordsInHTML; //make a copy
     if (typeof data === 'string') {
         let languages = data.match(/lang *= *(['"a-zA-Z\-])+/g);
         if (languages) {
@@ -28,45 +44,79 @@ export function analyze(data) {
                 let raw = l.replace(/lang *= */, "");
                 raw = raw.replace(/['"]/g, "");
                 raw = raw.trim();
-                lang = raw;
+                rawlangs.push(raw);
                 langs.push(LANGTABLE[raw.slice(0,2)] || raw);
             });
-            toReturn.langs = langs;
+            fullLangs = langs;
+        } else {
+            // use detectlanguage api
+            wordsInHTML = processHTML(data);
+            let words = wordsInHTML.join(" ");
+            let mostLike = LangDetect.detect(words)[0];
+            let iso2 = mostLike.lang.trim()
+            rawlangs.push(iso2);
+            fullLangs.push(LANGTABLE[iso2.slice(0,2)] || iso2);
         }
     }
-    // no of Links
-    let noOfLink = typeof data === 'string' ? (data.match(/< *a/g) || []).length : 0;
-    if (noOfLink > 0) toReturn.noOfLink = noOfLink;
+    
     // words count && sentiment check
+    let wordcount;
+    let sentiment;
     if (typeof data === 'string') {
-        let arr = processHTML(data);
-        toReturn.wordCount = arr.length;
-        let useLang = lang ? lang.slice(0,2) : 'en'; //default = en
-        if (sentimentAnalyzers[useLang] !== undefined) toReturn.sentiment = sentimentAnalyzers[useLang].getSentiment(arr);
+        let arr = wordsInHTML === undefined? processHTML(data) : wordsInHTML;
+        if (rawlangs.length > 0 && (getMostUsedLang(rawlangs).toLowerCase() === 'cn') || (getMostUsedLang(rawlangs).toLowerCase() === 'zh')) {
+            //chinese tokenizer 
+            let str = arr.join("");
+            str = str.replace(/\s/g, "");
+            wordcount = chTokenize(str).length;
+        } else {
+            //tokenize with RiTa
+            wordcount = arr.length;
+        }
+        let useLang = rawlangs.length > 0 ? getMostUsedLang(rawlangs) : 'en'; //default = en
+        if (sentimentAnalyzers[useLang] !== undefined) sentiment = sentimentAnalyzers[useLang].getSentiment(arr);
     }
 
+    if (noOfImg > 0) toReturn.noOfImg = noOfImg;
+    if (noOfLink > 0) toReturn.noOfLink = noOfLink;
+    if (fullLangs.length > 0) toReturn.langs = fullLangs;
+    if (wordcount !== undefined && wordcount > 0) toReturn.wordCount = wordcount;
+    if (sentiment !== undefined) toReturn.sentiment = sentiment;
     return toReturn;
 }
 
 function processHTML(str) {
     let raws = str;
-    raws = raws.replace(/<.*>/g, "");
-    let raw = wordTokenizer.tokenize(raws);
-    let cooked = [];
-    raw.forEach(t => {
-        if (/^<.*>$/.test(t.trim())) {
-            //is tag
-        } else if (/^[\p{P}|\+|-|<|>|\^|\$|\ufffd|`]*$/u.test(t.trim())) {
-            // is punct
-        } else if (/\n/.test(t.trim())) {
-            // is \n
-        } else {
-            cooked.push(t.trim());
-        }
-    });
-    return cooked;
+    let dom = new JSDOM(raws);
+    let body = dom.window.document.body;
+    let scripts = body.getElementsByTagName("script");
+    let i = scripts.length;
+    while (i--) {
+        scripts[i].parentNode.removeChild(scripts[i]);
+    }
+    let text = body.textContent;
+    text = text.replace(/\n/g, " ");
+    return RiTa.tokenize(text);
 }
 
+function getMostUsedLang(arr) {
+    let o = {};
+    arr.forEach(l => {
+        let s = l.slice(0, 2);
+        if (!o.hasOwnProperty(s)) {
+            o[s] = 1;
+        } else {
+            o[s] += 1;
+        }
+    });
+    let sortable = []
+    for (let s in o) {
+        sortable.push([s, o[s]]);
+    }
+
+    sortable.sort((a, b) => { return b[1] - a[1] });
+    return sortable[0][0];
+}
 
 const LANGTABLE = {
 ab: "Abkhazian",

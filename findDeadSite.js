@@ -25,7 +25,6 @@ export async function isOnlineNow(url, debug) {
 }
 
 export async function timeTravel(url, debug) {
-    //TODOs: redo this
     let uri = url;
     let s = "http://labs.mementoweb.org/timemap/json/" + uri;
     let timemap = await get(s).then(resp => {
@@ -40,29 +39,6 @@ export async function timeTravel(url, debug) {
             return raw;
         }
     });
-    if (timemap === undefined || timemap === false) {
-        // try DIY
-        s = "http://timetravel.mementoweb.org/timemap/json/" + uri;
-        timemap = await get(s).then(resp => {
-            if (resp === undefined) {
-                console.error("Undefined response");
-                return undefined;
-            } else if (!/^[2][0-9][0-9]$/.test(resp.status.toString())) {
-                if (debug) console.log("No history found");
-                return false;
-            } else {
-                let raw = resp.data;
-                return raw;
-            }
-        });
-        if (timemap === undefined) return undefined;
-        if (timemap === false) return false;
-        //TODOs
-        timemap.forEach(e => {
-            let eURI = e.uri;
-
-        });
-    };
     /// continute process WDI
     if (timemap.hasOwnProperty("timemap_index")) {
         if (!Array.isArray(timemap.timemap_index)) {
