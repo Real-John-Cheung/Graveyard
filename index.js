@@ -34,9 +34,9 @@ async function test() {
 
 async function createTestJSON() {
     let a = [];
-    let o = await confirmIfDead("kilopeople.com", true);
+    let o = await confirmIfDead("kilopeople.com");
     a.push(o);
-    let o2 = await confirmIfDead("sun.com", true);
+    let o2 = await confirmIfDead("chuganwang.com");
     a.push(o2);
     import('fs').then(fs => {
         fs.writeFileSync('./test.json', JSON.stringify(a));
