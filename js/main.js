@@ -35,7 +35,9 @@ function hideGravestoneDetail(ids) {
 
 // generate the website
 $(document).ready(() => {
-    document.fonts.ready.then(getJson("./test.json"))
+    document.fonts.load("12pt 'Benny Harvey RIP'").then(() => {
+        document.fonts.ready.then(getJson("./test.json"));
+    });
 });
 
 function getJson(url) {
@@ -94,10 +96,10 @@ function createGraveyard(objs, debug) {
 
         //texts
         ctx.textAlign = 'center';
-        ctx.font = '14px "Benny Harvey RIP"'
+        ctx.font = '12pt "Benny Harvey RIP"'
         ctx.fillStyle = "white";
         ctx.fillText(name, canvas.width / 2, canvas.height * 0.7, 140);
-        ctx.font = "16px 'Benny Harvey RIP'";
+        ctx.font = "14pt 'Benny Harvey RIP'";
         ctx.fillText(firstDateY + "  ~  " + lastDateY, canvas.width/2, canvas.height*0.85);
         // -- 
         a.appendChild(canvas);
