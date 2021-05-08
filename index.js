@@ -35,10 +35,12 @@ async function test() {
 
 async function createTestJSON() {
     let a = [];
-    let o = await confirmIfDead("kilopeople.com", true);
+    let o = await confirmIfDead("kilopeople.com");
     a.push(o);
-    let o2 = await confirmIfDead("chuganwang.com", true);
+    let o2 = await confirmIfDead("chuganwang.com");
     a.push(o2);
+    let o3 = await confirmIfDead("carlightstore.com");
+    a.push(o3);
     import('fs').then(fs => {
         fs.writeFileSync('./test.json', JSON.stringify(a));
     });

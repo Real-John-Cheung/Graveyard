@@ -1,5 +1,25 @@
 import fs from 'fs';
 import axios from "axios";
+const DOMAINSELLER = ['epik', 'bluehost', 'godaddy', 'network solution', "hostgator", 'namecheap', 'dreamhost', 'buydomains'];
+
+const isForSale = function (title, domain) {
+    let contentThisDomain = title.includes(domain);
+    let contentWordDomain = title.includes("domain");
+    let contentWordForsale = title.includes("for") && title.includes("sale");
+    let contentWordBuyWith = title.includes("buy") && title.includes("with");
+    let contentWordBuyFrom = title.includes("buy") && title.includes("from");
+
+    let contentSeller = false;
+    for (let i = 0; i < DOMAINSELLER.length; i++) {
+        let s = DOMAINSELLER[i];
+        if (title.includes(s)) {
+            contentSeller = true;
+            break;
+        }
+    }
+
+    return ((contentThisDomain || contentWordDomain) && contentWordForsale) || ((contentWordBuyFrom || contentWordBuyWith) && contentSeller);
+}
 
 const get = async function(url) {
     try {
@@ -15,11 +35,16 @@ export async function isOnlineNow(url, debug) {
     let b = await get(url).then(resp => {
         if (resp === undefined) {
             console.error("Undefined response");
-            return undefined;
+            return false;
         }
         let sta = resp.status.toString();
         if (debug) console.log("Status code for " + url + " is " + sta);
-        return !/^[45][0-9][0-9]$/.test(sta);
+        if (/^[45][0-9][0-9]$/.test(sta)) return false;
+        // get rid of for sale pages
+        let data = resp.data;
+        let title = data.match(/<title[^>]*>([^<]+)<\/title>/)[0];
+        title = title.replace(/<[\/]?title>/g, "");
+        return !isForSale(title.toLowerCase(), url.replace(/http[s]?:\/\//, "").toLowerCase());
     });
     return b
 }
