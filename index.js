@@ -1,6 +1,20 @@
 import createFingerPrint from "./fingerPrint.js"
 import { isOnlineNow, timeTravel } from "./findDeadSite.js"
 import { analyze } from "./analyzer.js"
+import pg from 'pg'
+const { Client } = pg;
+
+if (process.env.DATABASE_URL === undefined) {
+    let m = await import('./env.js');
+    process.env.DATABASE_URL = m.DATABASE_URL;
+}
+
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+});
 
 async function findDeath(url) {
     url = "http://" + url;
@@ -25,6 +39,11 @@ async function confirmIfDead(url, skipOnlineCheck) {
     t.domain = url.trim().replace(/http[s]?:\/\//, "").replace(/\/,*$/, "");
     t.first.statics = analyze(t.first.data);
     t.last.statics = analyze(t.last.data);
+
+    //delete data field to save db place
+    delete t.first.data
+    delete t.last.data
+
     return t;
 }
 
@@ -47,4 +66,4 @@ async function createTestJSON() {
 
 }
 
-createTestJSON();
+console.log(process.env.DATABASE_URL);
