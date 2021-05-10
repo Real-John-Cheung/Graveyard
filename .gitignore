@@ -103,4 +103,5 @@ dist
 # TernJS port file
 .tern-port
 
-test.josn
+test.json
+digger.js
