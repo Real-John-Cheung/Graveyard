@@ -6,15 +6,41 @@ const { Client } = pg;
 
 if (process.env.DATABASE_URL === undefined) {
     let m = await import('./env.js');
-    process.env.DATABASE_URL = m.DATABASE_URL;
+    process.env.DATABASE_URL = m.DATABASE_URL; // remote
 }
 
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
-    }
-});
+// const client = new Client({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//         rejectUnauthorized: false
+//     }
+// }); //remote
+
+const client = new Client(); // local
+
+async function textDB() {
+    const testTable = `
+    CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+    CREATE TABLE IF NOT EXISTS toBeConfirm (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    data JSONB
+    );
+    `
+
+    await client.connect();
+
+    //await client.query(testTable);
+
+    const newItem = { 'chuganwang.com': '20210501' }
+    //await client.query('INSERT INTO ToBeConfirm(data) VALUES($1)', [newItem]);
+
+    const { rows } = await client.query('SELECT * FROM toBeConfirm')
+
+    console.log(rows[0], typeof rows[0]);
+
+    await client.end();
+}
+
 
 async function findDeath(url) {
     url = "http://" + url;
@@ -49,7 +75,7 @@ async function confirmIfDead(url, skipOnlineCheck) {
 
 async function test() {
     let o = await confirmIfDead("https://fake.com");
-    return {first: o.first.statics, last: o.last.statics};
+    return { first: o.first.statics, last: o.last.statics };
 }
 
 async function createTestJSON() {
@@ -66,4 +92,4 @@ async function createTestJSON() {
 
 }
 
-console.log(process.env.DATABASE_URL);
+textDB();
