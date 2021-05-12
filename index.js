@@ -81,7 +81,7 @@ async function confirmIfDead(url, skipOnlineCheck) {
     url = "http://" + url;
     let isOn = skipOnlineCheck ? false : await isOnlineNow(url);
     if (isOn) return false;
-    let t = await timeTravel(url);
+    let t = await timeTravel(url, 1);
     if (typeof t !== 'object') return t;
     let seed = t.first.data + t.last.data;
 
@@ -91,6 +91,7 @@ async function confirmIfDead(url, skipOnlineCheck) {
     t.domain = url.trim().replace(/http[s]?:\/\//, "").replace(/\/,*$/, "");
     t.first.statics = analyze(t.first.data);
     t.last.statics = analyze(t.last.data);
+    t.confirmed = true;
 
     //delete data field to save db place
     delete t.first.data
@@ -107,15 +108,15 @@ async function test() {
 async function createTestJSON(raw) {
     let a = [];
     let o = await confirmIfDead("kilopeople.com");
-    a.push(o);
-    let o2 = await confirmIfDead("chuganwang.com");
-    a.push(o2);
+    if (o) a.push(o);
+    let o2 = await confirmIfDead("chuganwang.com", 1);
+    if (o2) a.push(o2);
     let o3 = await confirmIfDead("carlightstore.com");
-    a.push(o3);
+    if (o3) a.push(o3);
     import('fs').then(fs => {
         fs.writeFileSync('./test.json', JSON.stringify(a));
     });
 
 }
 
-console.log(await getRaw());
+createTestJSON();

@@ -25,7 +25,6 @@ const get = async function(url) {
         const resp = await axios.get(url);
         return resp;
     } catch(err) {
-        console.error(err);
         return undefined;
     }
 }
@@ -33,7 +32,7 @@ const get = async function(url) {
 export async function isOnlineNow(url, debug) {
     let b = await get(url).then(resp => {
         if (resp === undefined) {
-            console.error("Undefined response");
+            console.error(url + " isOnline?: Undefined response");
             return false;
         }
         let sta = resp.status.toString();
@@ -53,10 +52,10 @@ export async function timeTravel(url, debug) {
     let s = "http://labs.mementoweb.org/timemap/json/" + uri;
     let timemap = await get(s).then(resp => {
         if (resp === undefined) {
-            console.error("Undefined response");
+            console.error("timetravel: Undefined response");
             return undefined;
         } else if (!/^[2][0-9][0-9]$/.test(resp.status.toString())) {
-            if (debug) console.log("No history found");
+            if (debug) console.log("No history found for " + url);
             return false;
         } else {
             let raw = resp.data;
