@@ -1,3 +1,6 @@
+Parse.initialize('D3v9Sxvy5Ac8RJeMk63QfRt7AaXbNjy7aLFvsIru', 'oqz1Iw3sOFZLlFEqLkg6mNB3WL1K3PvG818TWIYx')
+Parse.serverURL = 'https://parseapi.back4app.com/'
+
 const monthTable = {
     "01": "JAN",
     "02": "FEB",
@@ -36,9 +39,24 @@ function hideGravestoneDetail(ids) {
 // generate the website
 $(document).ready(() => {
     document.fonts.load("12pt 'Benny Harvey RIP'").then(() => {
-        document.fonts.ready.then(getJson("./test.json"));
+        //document.fonts.ready.then(getJson("./test.json"));// local
+        document.fonts.ready.then(fetchJSON("test")); // from database
     });
 });
+
+function fetchJSON(cla) {
+    const c = Parse.Object.extend(cla);
+    const q = new Parse.Query(c);
+    q.find().then((res) => {
+        res.forEach(r => {
+        });
+        console.log(res);
+        handleLoadError();
+    }, (err) => {
+        console.error("Error when fetch data " + err);
+        handleLoadError();
+    });
+}
 
 function getJson(url) {
     let request = new XMLHttpRequest();
