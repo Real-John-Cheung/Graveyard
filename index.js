@@ -106,7 +106,7 @@ async function test() {
 
 async function createTestJSON(raw) {
     let a = [];
-    let o = await confirmIfDead("kilopeople.com");
+    let o = await confirmIfDead("kilopeople.com", 1);
     if (o) a.push(o);
     let o2 = await confirmIfDead("chuganwang.com", 1);
     if (o2) a.push(o2);

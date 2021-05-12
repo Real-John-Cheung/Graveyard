@@ -47,7 +47,7 @@ export function analyze(data) {
         } else {
             // use detectlanguage api
             wordsInHTML = processHTML(data);
-            let words = wordsInHTML.join(" ");
+            let words = wordsInHTML.join("");
             let mostLike = LangDetect.detect(words)[0];
             let iso2 = mostLike.lang.trim()
             rawlangs.push(iso2);
@@ -59,12 +59,14 @@ export function analyze(data) {
     let wordcount;
     let sentiment;
     if (typeof data === 'string') {
-        let arr = wordsInHTML === undefined? processHTML(data) : wordsInHTML;
+        if (wordsInHTML === undefined) wordsInHTML = processHTML(data);
+        let arr = wordsInHTML;
         if (rawlangs.length > 0 && (getMostUsedLang(rawlangs).toLowerCase() === 'cn') || (getMostUsedLang(rawlangs).toLowerCase() === 'zh')) {
             //chinese tokenizer 
             let str = arr.join("");
             str = str.replace(/\s/g, "");
-            wordcount = chTokenizer.doSegment(str, { simple: true, stripPunctuation: true } ).length;
+            wordsInHTML = chTokenizer.doSegment(str, { simple: true, stripPunctuation: true });
+            wordcount = wordsInHTML.length;
         } else {
             //tokenize with RiTa
             wordcount = arr.length;
@@ -72,12 +74,31 @@ export function analyze(data) {
         let useLang = rawlangs.length > 0 ? getMostUsedLang(rawlangs) : 'en'; //default = en
         if (sentimentAnalyzers[useLang] !== undefined) sentiment = sentimentAnalyzers[useLang].getSentiment(arr);
     }
+    //keywords
+    let keywords = [];
+    if (wordsInHTML !== undefined) {
+        let str = wordsInHTML.join(" ");
+        let kwic = RiTa.concordance(str, {
+            ignoreCase: true,
+            ignoreStopWords: true,
+            ignorePunctuation: true
+        })
+        let sortable = [];
+        for (let w in kwic) {
+            sortable.push([w, kwic[w]]);
+        }
+        sortable.sort((a, b) => { return b[1] - a[1] });
+        let first5 = sortable.slice(0, Math.min(sortable.length, 5));
+        keywords = first5.map(w => w[0]);
+    }
+
 
     if (noOfImg > 0) toReturn.noOfImg = noOfImg;
     if (noOfLink > 0) toReturn.noOfLink = noOfLink;
     if (fullLangs.length > 0) toReturn.langs = fullLangs;
     if (wordcount !== undefined && wordcount > 0) toReturn.wordCount = wordcount;
     if (sentiment !== undefined) toReturn.sentiment = sentiment;
+    if (keywords.length > 0) toReturn.keywords = keywords;
     return toReturn;
 }
 

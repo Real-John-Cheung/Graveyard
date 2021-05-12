@@ -1,5 +1,7 @@
-import axios from "axios";
+import axios from "axios"
+import iconv from "iconv-lite"
 const DOMAINSELLER = ['epik', 'bluehost', 'godaddy', 'network solution', "hostgator", 'namecheap', 'dreamhost', 'buydomains'];
+
 
 const isForSale = function (title, domain) {
     let contentThisDomain = title.includes(domain);
@@ -120,15 +122,17 @@ export async function timeTravel(url, debug) {
 export async function getHTML(obj) {
     let fURI = obj.first.uri;
     let lURI = obj.last.uri;
-    let resf = await get(fURI).then(resp => {
+    let resf = await axios.get(fURI, {responseType: 'arraybuffer' }).then(resp => {
         if (!/^2[0-9][0-9]$/.test(resp.status.toString())) return { error: "request fail with code " + resp.status };
-
-        return resp.data;
+        let charset = resp.headers['content-type'].match(/charset *= *[a-zA-Z0-9/-]+/)[0].replace(/charset *= *([a-zA-Z0-9/-]+)/, "$1").trim();
+        let data = iconv.decode(resp.data, charset.toLowerCase());
+        return data;
     });
-    let resl = await  get(lURI).then(resp => {
+    let resl = await axios.get(lURI, {responseType: 'arraybuffer' }).then(resp => {
         if (!/^2[0-9][0-9]$/.test(resp.status.toString())) return { error: "request fail with code " + resp.status };
-
-        return resp.data;
+        let charset = resp.headers['content-type'].match(/charset *= *[a-zA-Z0-9/-]+/)[0].replace(/charset *= *([a-zA-Z0-9/-]+)/, "$1").trim();
+        let data = iconv.decode(resp.data, charset.toLowerCase());
+        return data;
     });
     return {firstData: resf, lastData:resl};
 }
