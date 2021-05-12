@@ -39,8 +39,8 @@ function hideGravestoneDetail(ids) {
 // generate the website
 $(document).ready(() => {
     document.fonts.load("12pt 'Benny Harvey RIP'").then(() => {
-        document.fonts.ready.then(getJson("./test.json"));// local
-        //document.fonts.ready.then(fetchJSON("test")); // from database
+        //document.fonts.ready.then(getJson("./test.json"));// local
+        document.fonts.ready.then(fetchJSON("test")); // from database
     });
 });
 
@@ -98,14 +98,17 @@ function createGraveyard(objs, debug) {
         let rawD = obj.last.date.split("T")[0];
         let lastDate = (new Date(rawD.split("-")[0], parseInt(rawD.split("-")[1]) - 1, parseInt(rawD.split("-")[2]) + 2)).toISOString().split("T")[0];
         let lastDateY = lastDate.split("-")[0];
+        let iconInfo = genIcon(obj.fingerPrint);
+
         //create elements
+        let da = document.createElement("div");
+        da.setAttribute("class", "gravestone");
         let a = document.createElement("a");
         a.href = "javascript:void(0)"
         a.setAttribute("onclick", `showGravestoneDetail("${idds}")`);
-        a.setAttribute("class", "gravestone");
         let canvas = document.createElement("canvas");
         canvas.setAttribute("class", "canvas")
-        canvas.width = 160;
+        canvas.width = 140;
         canvas.height = 160;
         //draw
         let ctx = canvas.getContext('2d');
@@ -116,19 +119,27 @@ function createGraveyard(objs, debug) {
         //ctx.drawImage(img, 0, 0, canvas.width, canvas.height);//ugly :(
         
         //icon 
-        //TODOS
-        let iconInfo = genIcon(obj.fingerPrint);
+        iconInfo.forEach((c, i) => {
+            ctx.fillStyle = `rgb(${c}, ${c}, ${c})`;
+            let raw = Math.floor(i / 8);
+            let col = i % 8;
+            let a = 10;
+            let x = (canvas.width - 8 * a) / 2 + raw * a;
+            let y = 10 + col * a;
+            ctx.fillRect(x, y, a, a);
+        });
 
         //texts
         ctx.textAlign = 'center';
         ctx.font = '12pt "Benny Harvey RIP"'
         ctx.fillStyle = "white";
-        ctx.fillText(name, canvas.width / 2, canvas.height * 0.7, 140);
+        ctx.fillText(name, canvas.width / 2, canvas.height * 0.75, 140);
         ctx.font = "14pt 'Benny Harvey RIP'";
-        ctx.fillText(firstDateY + "  ~  " + lastDateY, canvas.width/2, canvas.height*0.85);
+        ctx.fillText(firstDateY + "  ~  " + lastDateY, canvas.width/2, canvas.height*0.9);
         // -- 
         a.appendChild(canvas);
-        $("#main").append(a);
+        da.appendChild(a);
+        $("#main").append(da);
 
         //append graveStone detail
         let d = document.createElement("div");
@@ -137,7 +148,7 @@ function createGraveyard(objs, debug) {
         //append children of detail
         //exit button
         let exitButtonwrapper = document.createElement("p");
-        exitButtonwrapper.setAttribute("style", "text-align: right;padding-right: 20px;height:8%");
+        exitButtonwrapper.setAttribute("style", "text-align: right;padding-right: 20px;height:5%;margin: 10px 0 0 0;");
         let exitButton = document.createElement("a");
         exitButton.href = "javascript:void(0)"
         exitButton.setAttribute("onclick", `hideGravestoneDetail("${idds}")`);
@@ -155,7 +166,21 @@ function createGraveyard(objs, debug) {
         let icondomainwrapper = document.createElement("div");
         icondomainwrapper.setAttribute("class", "icondomainWrapper");
         //icon
-        //TODOS
+        let detailIcon = document.createElement("canvas");
+        detailIcon.setAttribute("class", "gravestoneDetailIcon");
+        detailIcon.width = 160;
+        detailIcon.height = 160;
+        dictx = detailIcon.getContext("2d");
+        iconInfo.forEach((c, i) => {
+            dictx.fillStyle = `rgb(${c}, ${c}, ${c})`;
+            let raw = Math.floor(i / 8);
+            let col = i % 8;
+            let a = detailIcon.width / 8;
+            let x = raw * a;
+            let y = col * a;
+            dictx.fillRect(x, y, a, a);
+        });
+        icondomainwrapper.appendChild(detailIcon);
         //domain
         let domain = document.createElement("p");
         domain.setAttribute("class", "detailDomain");
@@ -234,7 +259,12 @@ function processTime(timeString) {
 }
 
 function genIcon(fp) {
-    
+    // 8x8 grid with grey scale (16level)
+    let toReturn = [];
+    fp.split("").forEach(d => {
+        toReturn.push(parseInt(d, 16) * 16);
+    });
+    return toReturn;
 }
 
 function staticsToInnerHTML(statics) {

@@ -54,12 +54,13 @@ html,body{
     margin: auto;
     padding-left: 20px;
     padding-right: 20px;
+    padding-bottom: 40px;
     width: 180px;
     display: inline-block;
 }
 
 .canvas{
-    margin-left: 5%;
+    margin-left: 10%;
 }
 
 .gravestoneDetail{
@@ -81,6 +82,12 @@ html,body{
     height: 80%;
 }
 
+.gravestoneDetailIcon {
+    width: auto;
+    height: 80%;
+    margin: auto;
+}
+
 .gravestoneDetail a{
     color: white;
     text-decoration: underline;
@@ -95,10 +102,10 @@ html,body{
 }
 
 .icondomainWrapper{
-    display: block;
+    display: flex;
     margin: auto;
     padding: 20px;
-    width: 90%;
+    width: 80%;
     height: 30%;
 }
 
@@ -106,6 +113,7 @@ html,body{
     font-size: 20pt;
     padding-left: 20px;
     width: 50%;
+    margin: auto;
 }
 
 .detailFingerPrint{
@@ -159,9 +167,9 @@ html,body{
     padding-top: 20px;
     width: "80%";
     margin: auto;
-    height: 120px;
+    height: 15vmin;
     font-family: 'Duerer Gotisch';
-    font-size: 80pt;
+    font-size: 15vmin;
     display: flex;
 }
 
@@ -195,7 +203,7 @@ html,body{
 #main {
     display: block;
     margin: auto;
-    width: 80%;
+    max-width: 80%;
     padding-top: 50px;
     padding-bottom: 30px;
 }
