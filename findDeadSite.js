@@ -1,4 +1,3 @@
-import fs from 'fs';
 import axios from "axios";
 const DOMAINSELLER = ['epik', 'bluehost', 'godaddy', 'network solution', "hostgator", 'namecheap', 'dreamhost', 'buydomains'];
 
