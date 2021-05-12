@@ -48,10 +48,17 @@ function fetchJSON(cla) {
     const c = Parse.Object.extend(cla);
     const q = new Parse.Query(c);
     q.find().then((res) => {
-        res.forEach(r => {
+        let objs = [];
+        res.forEach(o => {
+            let no = {};
+            no.domain = o.get("domain");
+            no.fingerPrint = o.get("fingerPrint");
+            no.time = o.get("time");
+            no.first = o.get("first");
+            no.last = o.get("last");
+            objs.push(no);
         });
-        console.log(res);
-        handleLoadError();
+        createGraveyard(objs, 1);
     }, (err) => {
         console.error("Error when fetch data " + err);
         handleLoadError();
