@@ -91,7 +91,6 @@ async function confirmIfDead(url, skipOnlineCheck) {
     t.domain = url.trim().replace(/http[s]?:\/\//, "").replace(/\/,*$/, "");
     t.first.statics = analyze(t.first.data);
     t.last.statics = analyze(t.last.data);
-    t.confirmed = true;
 
     //delete data field to save db place
     delete t.first.data
