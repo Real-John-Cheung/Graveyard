@@ -1,4 +1,4 @@
-Parse.initialize('D3v9Sxvy5Ac8RJeMk63QfRt7AaXbNjy7aLFvsIru', 'oqz1Iw3sOFZLlFEqLkg6mNB3WL1K3PvG818TWIYx')
+Parse.initialize('D3v9Sxvy5Ac8RJeMk63QfRt7AaXbNjy7aLFvsIru', 'oqz1Iw3sOFZLlFEqLkg6mNB3WL1K3PvG818TWIYx') // init client
 Parse.serverURL = 'https://parseapi.back4app.com/'
 
 const monthTable = {
@@ -39,8 +39,8 @@ function hideGravestoneDetail(ids) {
 // generate the website
 $(document).ready(() => {
     document.fonts.load("12pt 'Benny Harvey RIP'").then(() => {
-        //document.fonts.ready.then(getJson("./test.json"));// local
-        document.fonts.ready.then(fetchJSON("test")); // from database
+        document.fonts.ready.then(getJson("./test.json"));// local
+        //document.fonts.ready.then(fetchJSON("test")); // from database
     });
 });
 
@@ -86,7 +86,7 @@ function getJson(url) {
 
 function createGraveyard(objs, debug) {
     if (debug) console.log("create graveyard according to following data", objs);
-    if (debug) console.log(document.fonts)
+    //if (debug) console.log(document.fonts)
     objs.forEach((obj, i) => {
         //create each gravestone
         //infos

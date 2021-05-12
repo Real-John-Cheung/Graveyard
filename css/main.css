@@ -159,9 +159,10 @@ html,body{
     padding-top: 20px;
     width: "80%";
     margin: auto;
-    height: 100px;
+    height: 120px;
     font-family: 'Duerer Gotisch';
     font-size: 80pt;
+    display: flex;
 }
 
 #title img{
