@@ -44,7 +44,7 @@ export function analyze(data) {
                 raw = raw.replace(/['"]/g, "");
                 raw = raw.trim();
                 rawlangs.push(raw);
-                langs.push(LANGTABLE[raw.slice(0,2)] || raw);
+                langs.push(LANGTABLE[raw.slice(0,2).toLowerCase()] || raw);
             });
             fullLangs = langs;
         } else {
