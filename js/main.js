@@ -318,5 +318,8 @@ function getLang(obj) {
     });
     if (sortable.length == 0) return undefined;
     sortable.sort((a, b) => { return b[1] - a[1]; });
-    return sortable[0][0].charAt(0).toUpperCase() + sortable[0][0].slice(1);
+    return sortable.slice(0, Math.min(sortable.length, 3)).map(e => {
+        return e[0].charAt(0).toUpperCase() + e[0].substring(1);
+    }).join(", ");
+    
 }
