@@ -27,7 +27,8 @@
     "novel-segment": "^2.7.58",
     "parse": "^3.2.0",
     "pg": "^8.6.0",
-    "rita": "^2.4.86"
+    "rita": "^2.4.86",
+    "twitter-lite": "^1.1.0"
   },
   "type": "module"
 }
