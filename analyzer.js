@@ -57,7 +57,7 @@ export function analyze(data) {
             if (!fullLangs.includes(iso2) && !fullLangs.includes(LANGTABLE[iso2])) fullLangs.push(LANGTABLE[iso2] || iso2);
         }
     }
-    
+
     // words count && sentiment check
     let wordcount;
     let sentiment;
@@ -97,7 +97,11 @@ export function analyze(data) {
         });
         //console.log(sortable);
         let first5 = sortable.slice(0, Math.min(sortable.length, 8));
-        keywords = first5.map(w => w[0]);
+        keywords = first5.map(w => {
+            let tr = {};
+            tr[w[0]] = w[1];
+            return tr;
+        });
     }
 
 
