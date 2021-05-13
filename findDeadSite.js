@@ -129,12 +129,16 @@ export async function getHTML(obj) {
         let charset = resp.headers['content-type'].match(/charset *= *[a-zA-Z0-9/-]+/)[0].replace(/charset *= *([a-zA-Z0-9/-]+)/, "$1").trim();
         let data = iconv.decode(resp.data, charset.toLowerCase());
         return data;
+    }, err => {
+        console.log("err when trying to fetch" + fURI + err);
     });
     let resl = await axios.get(lURI, {responseType: 'arraybuffer' }).then(resp => {
         if (!/^2[0-9][0-9]$/.test(resp.status.toString())) return { error: "request fail with code " + resp.status };
         let charset = resp.headers['content-type'].match(/charset *= *[a-zA-Z0-9/-]+/)[0].replace(/charset *= *([a-zA-Z0-9/-]+)/, "$1").trim();
         let data = iconv.decode(resp.data, charset.toLowerCase());
         return data;
+    }, err => {
+        console.log("err when trying to fetch" + lURI + err);
     });
     return {firstData: resf, lastData:resl};
 }
