@@ -97,11 +97,7 @@ export function analyze(data) {
         });
         //console.log(sortable);
         let first5 = sortable.slice(0, Math.min(sortable.length, 8));
-        keywords = first5.map(w => {
-            let tr = {};
-            tr[w[0]] = w[1];
-            return tr;
-        });
+        keywords = first5
     }
 
 
