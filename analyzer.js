@@ -43,19 +43,18 @@ export function analyze(data) {
                 let raw = l.replace(/lang *= */, "");
                 raw = raw.replace(/['"]/g, "");
                 raw = raw.trim();
-                rawlangs.push(raw);
-                langs.push(LANGTABLE[raw.slice(0,2).toLowerCase()] || raw);
+                rawlangs.push(raw.slice(0,2).toLowerCase());
+                fullLangs.push(LANGTABLE[raw.slice(0,2).toLowerCase()] || raw.slice(0,2).toLowerCase());
             });
-            fullLangs = langs;
         }
         // use detectlanguage api
         wordsInHTML = processHTML(data);
         let words = wordsInHTML.join("");
         let mostLike = LangDetect.detect(words)[0].prob > 0.5 ? LangDetect.detect(words)[0] : undefined;
-        if (mostLike !== undefined && mostLike.length > 0) {
+        if (mostLike !== undefined) {
             let iso2 = mostLike.lang.trim().toLowerCase().substring(0, 2);
-            rawlangs.push(iso2);
-            fullLangs.push(LANGTABLE[iso2] || iso2);
+            if (!rawlangs.includes(iso2)) rawlangs.push(iso2);
+            if (!fullLangs.includes(iso2) && !fullLangs.includes(LANGTABLE[iso2])) fullLangs.push(LANGTABLE[iso2] || iso2);
         }
     }
     
