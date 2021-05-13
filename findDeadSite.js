@@ -49,7 +49,7 @@ export async function isOnlineNow(url, debug) {
     return b
 }
 
-export async function timeTravel(url, debug) {
+export async function timeTravel(url, debug, short) {
     let uri = url;
     let s = "http://labs.mementoweb.org/timemap/json/" + uri;
     let timemap = await get(s).then(resp => {
@@ -65,6 +65,7 @@ export async function timeTravel(url, debug) {
         }
     });
     if (timemap === undefined || timemap === false) return false
+    if (short) return true;
     /// continute process WDI
     if (timemap.hasOwnProperty("timemap_index")) {
         if (!Array.isArray(timemap.timemap_index)) {

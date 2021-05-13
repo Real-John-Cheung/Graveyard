@@ -2,77 +2,37 @@ import createFingerPrint from "./fingerPrint.js"
 import { isOnlineNow, timeTravel } from "./findDeadSite.js"
 import { analyze } from "./analyzer.js"
 import axios from 'axios'
-// import pg from 'pg'
-// const { Client } = pg;
 
-// if (process.env.DATABASE_URL === undefined) {
+// if (process.env.B4A_APPID === undefined || process.env.B4A_RESTAPIKEY === undefined) {
 //     let m = await import('./env.js');
-//     process.env.DATABASE_URL = m.DATABASE_URL; // remote
+//     if (process.env.B4A_APPID === undefined) process.env.B4A_APPID = m.B4A_CONFIG.appid;
+//     if (process.env.B4A_RESTAPIKEY === undefined) process.env.B4A_RESTAPIKEY = m.B4A_CONFIG.restapikey;
 // }
 
-// // const client = new Client({
-// //     connectionString: process.env.DATABASE_URL,
-// //     ssl: {
-// //         rejectUnauthorized: false
-// //     }
-// // }); //remote
-
-// const client = new Client(); // local
-
-// async function textDB() {
-//     const testTable = `
-//     //CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-//     CREATE TABLE IF NOT EXISTS toBeConfirm (
-//     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-//     data JSONB
-//     );
-//     `
-
-//     await client.connect();
-
-//     //await client.query(testTable);
-
-//     const newItem = { 'chuganwang.com': '20210501' }
-//     //await client.query('INSERT INTO ToBeConfirm(data) VALUES($1)', [newItem]);
-
-//     const { rows } = await client.query('SELECT * FROM toBeConfirm')
-
-//     console.log(rows[0], typeof rows[0]);
-
-//     await client.end();
+// async function getRaw() {
+//     const config = {
+//         headers: {
+//             "X-Parse-Application-Id": process.env.B4A_APPID,
+//             "X-Parse-REST-API-Key": process.env.B4A_RESTAPIKEY
+//         }
+//     }
+//     try {
+//         const resp = await axios.get('https://internetgraveyard.b4a.io/classes/raw', config);
+//         if (resp !== undefined) {
+//             if (resp.status.toString() === "200") return resp.data;
+//             return undefined;
+//         }
+//         return undefined;
+//     } catch (e) {
+//         console.log('err: ' + e);
+//     }
 // }
-
-
-if (process.env.B4A_APPID === undefined || process.env.B4A_RESTAPIKEY === undefined) {
-    let m = await import('./env.js');
-    if (process.env.B4A_APPID === undefined) process.env.B4A_APPID = m.B4A_CONFIG.appid;
-    if (process.env.B4A_RESTAPIKEY === undefined) process.env.B4A_RESTAPIKEY = m.B4A_CONFIG.restapikey;
-}
-
-async function getRaw() {
-    const config = {
-        headers: {
-            "X-Parse-Application-Id": process.env.B4A_APPID,
-            "X-Parse-REST-API-Key": process.env.B4A_RESTAPIKEY
-        }
-    }
-    try {
-        const resp = await axios.get('https://internetgraveyard.b4a.io/classes/raw', config);
-        if (resp !== undefined) {
-            if (resp.status.toString() === "200") return resp.data;
-            return undefined;
-        }
-        return undefined;
-    } catch (e) {
-        console.log('err: ' + e);
-    }
-}
 
 async function findDeath(url) {
     url = "http://" + url;
     let isOn = skipOnlineCheck ? false : await isOnlineNow(url);
     if (isOn) return false;
-    let t = await timeTravel(url);
+    let t = await timeTravel(url, 1, true);
     if (typeof t !== 'object') return t;
     return true;
 }
@@ -99,13 +59,14 @@ async function confirmIfDead(url, skipOnlineCheck) {
     return t;
 }
 
-async function test() {
-    let o = await confirmIfDead("https://fake.com");
-    return { first: o.first.statics, last: o.last.statics };
-}
-
 async function createTestJSON(raw) {
-    let dl = ["kilopeople.com","chuganwang.com","carlightstore.com","tnsvoronezh.ru", "fcspam.ru", "YourGameGuy.com"]
+    let dl = ["kilopeople.com","chuganwang.com","carlightstore.com","tnsvoronezh.ru", "fcspam.ru", "YourGameGuy.com", "CanadaGoose-Jackets.org.uk","MichaelKorsOnline.ca",
+    "nao-stroy.ru",
+    "StampProject.it",
+    "usacheapnfljerseysbiz.com",
+    "yazdhistory.com",
+    "CanadaGooseOutletStore.ca",
+    "wsland.cn"]
     let a = [];
     for (let i = 0; i < dl.length; i ++) {
         let o = await confirmIfDead(dl[i], 1);
