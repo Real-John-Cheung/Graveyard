@@ -47,14 +47,15 @@ export function analyze(data) {
                 langs.push(LANGTABLE[raw.slice(0,2).toLowerCase()] || raw);
             });
             fullLangs = langs;
-        } else {
-            // use detectlanguage api
-            wordsInHTML = processHTML(data);
-            let words = wordsInHTML.join("");
-            let mostLike = LangDetect.detect(words)[0];
-            let iso2 = mostLike.lang.trim()
+        }
+        // use detectlanguage api
+        wordsInHTML = processHTML(data);
+        let words = wordsInHTML.join("");
+        let mostLike = LangDetect.detect(words)[0].prob > 0.5 ? LangDetect.detect(words)[0] : undefined;
+        if (mostLike !== undefined && mostLike.length > 0) {
+            let iso2 = mostLike.lang.trim().toLowerCase().substring(0, 2);
             rawlangs.push(iso2);
-            fullLangs.push(LANGTABLE[iso2.slice(0,2)] || iso2);
+            fullLangs.push(LANGTABLE[iso2] || iso2);
         }
     }
     
@@ -125,6 +126,7 @@ function processHTML(str) {
 }
 
 function getMostUsedLang(arr) {
+    if (!arr || arr.length === 0) return "";
     let o = {};
     arr.forEach(l => {
         let s = l.slice(0, 2);
