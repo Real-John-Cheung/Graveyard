@@ -77,6 +77,10 @@ html,body{
     font-size: 12pt;
 }
 
+.barcode{
+    max-width: 100%;
+}
+
 .gravestoneDetailContent{
     overflow-y: auto;
     height: 80%;

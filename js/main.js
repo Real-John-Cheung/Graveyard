@@ -194,9 +194,20 @@ function createGraveyard(objs, debug) {
         icondomainwrapper.appendChild(domain);
         dc.appendChild(icondomainwrapper);
         //fingerPrint
-        let fingerprint = document.createElement("p");
+        let fingerprint = document.createElement("div");
         fingerprint.setAttribute("class", "detailFingerPrint");
-        fingerprint.innerHTML = "FingerPrint: <br>" + obj.fingerPrint;
+        fingerprint.innerHTML = "<p>FingerPrint: </p>";//
+        let barcode = document.createElement("img");
+        barcode.setAttribute("class", "barcode");
+        JsBarcode(barcode, obj.fingerPrint, {
+            height: 40,
+            font: 'Modern Antiqua',
+            background: 'black',
+            lineColor: 'white',
+            width: 1,
+            fontSize: 16
+        });
+        fingerprint.appendChild(barcode);
         dc.appendChild(fingerprint);
         //date of birth
         let dob = document.createElement("p");
