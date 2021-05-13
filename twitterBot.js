@@ -12,3 +12,7 @@ const client = new Twitter({
     consumer_key: process.env.TWITTERKEY, 
     consumer_secret: process.env.TWITTERTOKEN 
 });
+
+export function tweetNew() {
+    
+}
