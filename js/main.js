@@ -200,7 +200,7 @@ function createGraveyard(objs, debug) {
         //date of birth
         let dob = document.createElement("p");
         dob.setAttribute("class", "detailDob");
-        dob.innerHTML = "<a href=\""+ obj.first.uri +"\" target=\"_blank\">" + processDate(firstDate) + "</a> <b> Logged in</b>";
+        dob.innerHTML = "<a href=\""+ obj.first.uri +"\" target=\"_blank\">" + processDate(firstDate) + "</a> <b> Online</b>";
         dc.appendChild(dob);
         let bsta = document.createElement("p");
         bsta.setAttribute("class", "statics");
@@ -214,7 +214,7 @@ function createGraveyard(objs, debug) {
         //date of death
         let dod = document.createElement("p");
         dod.setAttribute("class", "detailDod");
-        dod.innerHTML = "<a href=\""+ obj.last.uri +"\" target=\"_blank\">" + processDate(lastDate) + "</a> <b> Logged out</b>";
+        dod.innerHTML = "<a href=\""+ obj.last.uri +"\" target=\"_blank\">" + processDate(lastDate) + "</a> <b> Offine</b>";
         dc.appendChild(dod);
         let dsta = document.createElement("p");
         dsta.setAttribute("class", "statics");
@@ -276,6 +276,10 @@ function staticsToInnerHTML(statics) {
         if (statics.hasOwnProperty("noOfImg")) toReturn += (toReturn.length > 5 ? " , " : "") + statics.noOfImg + " images";
         if (statics.hasOwnProperty("noOfLink")) toReturn += (toReturn.length > 5 ? " , " : "") + statics.noOfLink + " links";
         toReturn += ".<br><br>";
+    }
+    if (statics.hasOwnProperty("keywords")) {
+        toReturn += "<span style=\"font-size: 0.8em;\"><i>" + statics.keywords.join(", ") + "</i></span>";
+        toReturn += "<br><br>"
     }
     //tem should have some generated text with it
     //TODOs
