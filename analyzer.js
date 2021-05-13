@@ -19,6 +19,9 @@ const sentimentAnalyzers = {
     'it': new Analyzer("Italian", stemmer, 'pattern'),
     'es': new Analyzer("Spanish", stemmer, 'afinn')
 }
+const notKeywords = [
+    "error","not","在","再","的","地","得","不","他","他們","她","她們","它","它們","們","牠","牠們","我","我們","你","你們","妳","妳們","自","can","cannot","la","de","with","without"
+];
 
 export function analyze(data) {
     let toReturn = {};
@@ -81,14 +84,19 @@ export function analyze(data) {
         let kwic = RiTa.concordance(str, {
             ignoreCase: true,
             ignoreStopWords: true,
-            ignorePunctuation: true
+            ignorePunctuation: true,
+            wordsToIgnore: notKeywords
         })
         let sortable = [];
         for (let w in kwic) {
             sortable.push([w, kwic[w]]);
         }
-        sortable.sort((a, b) => { return b[1] - a[1] });
-        let first5 = sortable.slice(0, Math.min(sortable.length, 5));
+        sortable.sort((a, b) => {
+            if (a[1] !== b[1]) return b[1] - a[1]; // first sort by frq
+            return b[0].length - a[0].length; // if same frq sort by word length
+        });
+        //console.log(sortable);
+        let first5 = sortable.slice(0, Math.min(sortable.length, 8));
         keywords = first5.map(w => w[0]);
     }
 

@@ -64,6 +64,7 @@ export async function timeTravel(url, debug) {
             return raw;
         }
     });
+    if (timemap === undefined || timemap === false) return false
     /// continute process WDI
     if (timemap.hasOwnProperty("timemap_index")) {
         if (!Array.isArray(timemap.timemap_index)) {

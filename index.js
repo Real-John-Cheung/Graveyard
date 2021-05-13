@@ -105,13 +105,13 @@ async function test() {
 }
 
 async function createTestJSON(raw) {
+    let dl = ["kilopeople.com","chuganwang.com","carlightstore.com","tnsvoronezh.ru", "fcspam.ru", "YourGameGuy.com"]
     let a = [];
-    let o = await confirmIfDead("kilopeople.com", 1);
-    if (o) a.push(o);
-    let o2 = await confirmIfDead("chuganwang.com", 1);
-    if (o2) a.push(o2);
-    let o3 = await confirmIfDead("carlightstore.com");
-    if (o3) a.push(o3);
+    for (let i = 0; i < dl.length; i ++) {
+        let o = await confirmIfDead(dl[i], 1);
+        if (o) a.push(o);
+    }
+   
     import('fs').then(fs => {
         fs.writeFileSync('./test.json', JSON.stringify(a));
     });
