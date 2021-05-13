@@ -39,31 +39,31 @@ function hideGravestoneDetail(ids) {
 // generate the website
 $(document).ready(() => {
     document.fonts.load("12pt 'Benny Harvey RIP'").then(() => {
-        //document.fonts.ready.then(getJson("./test.json"));// local
-        document.fonts.ready.then(fetchJSON("test")); // from database
+        document.fonts.ready.then(getJson("./test.json"));// local
+        //document.fonts.ready.then(fetchJSON("test")); // from database
     });
 });
 
-function fetchJSON(cla) {
-    const c = Parse.Object.extend(cla);
-    const q = new Parse.Query(c);
-    q.find().then((res) => {
-        let objs = [];
-        res.forEach(o => {
-            let no = {};
-            no.domain = o.get("domain");
-            no.fingerPrint = o.get("fingerPrint");
-            no.time = o.get("time");
-            no.first = o.get("first");
-            no.last = o.get("last");
-            objs.push(no);
-        });
-        createGraveyard(objs, 1);
-    }, (err) => {
-        console.error("Error when fetch data " + err);
-        handleLoadError();
-    });
-}
+// function fetchJSON(cla) {
+//     const c = Parse.Object.extend(cla);
+//     const q = new Parse.Query(c);
+//     q.find().then((res) => {
+//         let objs = [];
+//         res.forEach(o => {
+//             let no = {};
+//             no.domain = o.get("domain");
+//             no.fingerPrint = o.get("fingerPrint");
+//             no.time = o.get("time");
+//             no.first = o.get("first");
+//             no.last = o.get("last");
+//             objs.push(no);
+//         });
+//         createGraveyard(objs, 1);
+//     }, (err) => {
+//         console.error("Error when fetch data " + err);
+//         handleLoadError();
+//     });
+// }
 
 function getJson(url) {
     let request = new XMLHttpRequest();
