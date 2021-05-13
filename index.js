@@ -60,13 +60,20 @@ async function confirmIfDead(url, skipOnlineCheck) {
 }
 
 async function createTestJSON(raw) {
-    let dl = ["kilopeople.com","chuganwang.com","carlightstore.com","tnsvoronezh.ru", "fcspam.ru", "YourGameGuy.com", "CanadaGoose-Jackets.org.uk","MichaelKorsOnline.ca",
+    let dl = [,"chuganwang.com","carlightstore.com","tnsvoronezh.ru", "fcspam.ru", "YourGameGuy.com", "CanadaGoose-Jackets.org.uk","MichaelKorsOnline.ca",
     "nao-stroy.ru",
     "StampProject.it",
     "usacheapnfljerseysbiz.com",
     "yazdhistory.com",
     "CanadaGooseOutletStore.ca",
-    "wsland.cn"]
+        "wsland.cn",
+        "Brenda-RossRealty.org",
+        "AllJordan.xyz",
+        "Teach-Sports.com",
+        "Black-Tip.top",
+        "druskabydaisy.com",
+        "JazzWorld.ch",
+        "Milk.xyz"]
     let a = [];
     for (let i = 0; i < dl.length; i ++) {
         let o = await confirmIfDead(dl[i], 1);

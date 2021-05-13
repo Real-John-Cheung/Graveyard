@@ -50,7 +50,7 @@ export function analyze(data) {
         // use detectlanguage api
         wordsInHTML = processHTML(data);
         let words = wordsInHTML.join("");
-        let mostLike = LangDetect.detect(words)[0].prob > 0.5 ? LangDetect.detect(words)[0] : undefined;
+        let mostLike = LangDetect.detect(words) && LangDetect.detect(words)[0].prob > 0.5 ? LangDetect.detect(words)[0] : undefined;
         if (mostLike !== undefined) {
             let iso2 = mostLike.lang.trim().toLowerCase().substring(0, 2);
             if (!rawlangs.includes(iso2)) rawlangs.push(iso2);
