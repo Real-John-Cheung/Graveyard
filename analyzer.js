@@ -20,7 +20,7 @@ const sentimentAnalyzers = {
     'es': new Analyzer("Spanish", stemmer, 'afinn')
 }
 const notKeywords = [
-    "error","not","在","再","的","地","得","不","他","他們","她","她們","它","它們","們","牠","牠們","我","我們","你","你們","妳","妳們","自","can","cannot","la","de","with","without"
+    "error","","not","在","再","的","地","得","不","他","他們","她","她們","它","它們","們","牠","牠們","我","我們","你","你們","妳","妳們","自","can","cannot","la","de","with","without"
 ];
 
 export function analyze(data) {
@@ -87,17 +87,19 @@ export function analyze(data) {
             ignorePunctuation: true,
             wordsToIgnore: notKeywords
         })
-        let sortable = [];
-        for (let w in kwic) {
-            sortable.push([w, kwic[w]]);
+        if (kwic && Object.keys(kwic).length > 0) {
+            let sortable = [];
+            for (let w in kwic) {
+                sortable.push([w, kwic[w]]);
+            }
+            sortable.sort((a, b) => {
+                if (a[1] !== b[1]) return b[1] - a[1]; // first sort by frq
+                return b[0].length - a[0].length; // if same frq sort by word length
+            });
+            //console.log(sortable);
+            let first5 = sortable.slice(0, Math.min(sortable.length, 8));
+            keywords = first5;
         }
-        sortable.sort((a, b) => {
-            if (a[1] !== b[1]) return b[1] - a[1]; // first sort by frq
-            return b[0].length - a[0].length; // if same frq sort by word length
-        });
-        //console.log(sortable);
-        let first5 = sortable.slice(0, Math.min(sortable.length, 8));
-        keywords = first5
     }
 
 
@@ -118,6 +120,11 @@ function processHTML(str) {
     let i = scripts.length;
     while (i--) {
         scripts[i].parentNode.removeChild(scripts[i]);
+    }
+    let styles = body.getElementsByTagName("style");
+    let ii = styles.length;
+    while (ii--) {
+        styles[ii].parentNode.removeChild(styles[ii]);
     }
     let text = body.textContent;
     text = text.replace(/\n/g, " ");
