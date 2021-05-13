@@ -340,12 +340,14 @@ function getLang(obj) {
 }
 
 function map(n, start1, stop1, start2, stop2) {
+    if (start1 === stop1) return (start2 + stop2) / 2;
     return ((n - start1) / (stop1 - start1) * (stop2 - start2) + start2);
 }
 
 function norm(raw) {
     let top = raw[0][1];
     let bottom = raw[raw.length - 1][1];
+    let same;
     let tor = [];
     raw.forEach(it => {
         tor.push([it[0], map(it[1], top, bottom, 30, 15)]);
