@@ -1,5 +1,3 @@
-// Parse.initialize('D3v9Sxvy5Ac8RJeMk63QfRt7AaXbNjy7aLFvsIru', 'oqz1Iw3sOFZLlFEqLkg6mNB3WL1K3PvG818TWIYx') // init client
-// Parse.serverURL = 'https://parseapi.back4app.com/'
 
 const monthTable = {
     "01": "JAN",
@@ -45,6 +43,9 @@ $(document).ready(() => {
 });
 
 // function fetchJSON(cla) {
+//     Parse.initialize('D3v9Sxvy5Ac8RJeMk63QfRt7AaXbNjy7aLFvsIru', 'oqz1Iw3sOFZLlFEqLkg6mNB3WL1K3PvG818TWIYx') // init client
+//     Parse.serverURL = 'https://parseapi.back4app.com/'
+
 //     const c = Parse.Object.extend(cla);
 //     const q = new Parse.Query(c);
 //     q.find().then((res) => {
