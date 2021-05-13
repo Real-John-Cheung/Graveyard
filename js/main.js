@@ -282,7 +282,7 @@ function staticsToInnerHTML(statics, tar) {
         nos.innerHTML = str;
         tar.appendChild(nos);
     }
-    if (statics.hasOwnProperty("keywords")) {
+    if (statics.hasOwnProperty("keywords") && statics.keywords.length > 0) {
         let can = document.createElement("canvas");
         WordCloud(can, {
             list: norm(statics.keywords),
