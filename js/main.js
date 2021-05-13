@@ -1,4 +1,3 @@
-
 const monthTable = {
     "01": "JAN",
     "02": "FEB",
@@ -214,29 +213,19 @@ function createGraveyard(objs, debug) {
         dob.setAttribute("class", "detailDob");
         dob.innerHTML = "<a href=\""+ obj.first.uri +"\" target=\"_blank\">" + processDate(firstDate) + "</a> <b> Online</b>";
         dc.appendChild(dob);
-        let bsta = document.createElement("p");
+        let bsta = document.createElement("div");
         bsta.setAttribute("class", "statics");
-        let bstas = "";
-        let bstatics = obj.first.statics;
-        bstas += staticsToInnerHTML(bstatics) || "";
-        if (bstas.length > 0) {
-            bsta.innerHTML = bstas;
-            dc.appendChild(bsta);
-        }
+        staticsToInnerHTML(obj.first.statics, bsta);
+        dc.appendChild(bsta);
         //date of death
         let dod = document.createElement("p");
         dod.setAttribute("class", "detailDod");
         dod.innerHTML = "<a href=\""+ obj.last.uri +"\" target=\"_blank\">" + processDate(lastDate) + "</a> <b> Offine</b>";
         dc.appendChild(dod);
-        let dsta = document.createElement("p");
+        let dsta = document.createElement("div");
         dsta.setAttribute("class", "statics");
-        let dstas = "";
-        let dstatics = obj.last.statics;
-        dstas += staticsToInnerHTML(dstatics) || "";
-        if (dstas.length > 0) {
-            dsta.innerHTML = dstas;
-            dc.appendChild(dsta);
-        }
+        staticsToInnerHTML(obj.last.statics, dsta);
+        dc.appendChild(dsta);
         //madetime
         let madetime = document.createElement("p");
         madetime.setAttribute("class", "madetime");
@@ -279,26 +268,41 @@ function genIcon(fp) {
     return toReturn;
 }
 
-function staticsToInnerHTML(statics) {
-    if (Object.keys(statics).length == 0) return "";
-    let toReturn = "";
+function staticsToInnerHTML(statics, tar) {
+    if (Object.keys(statics).length == 0) return;
+    
     if (statics.hasOwnProperty("noOfImg") || statics.hasOwnProperty("noOfLink") || statics.hasOwnProperty("wordCount")) {
-        toReturn += "With ";
-        if (statics.hasOwnProperty("wordCount")) toReturn += statics.wordCount + " words";
-        if (statics.hasOwnProperty("noOfImg")) toReturn += (toReturn.length > 5 ? " , " : "") + statics.noOfImg + " images";
-        if (statics.hasOwnProperty("noOfLink")) toReturn += (toReturn.length > 5 ? " , " : "") + statics.noOfLink + " links";
-        toReturn += ".<br><br>";
+        let str = ""
+        str += "<p>With ";
+        if (statics.hasOwnProperty("wordCount")) str += statics.wordCount + " words";
+        if (statics.hasOwnProperty("noOfImg")) str += (str.length > 5 ? " , " : "") + statics.noOfImg + " images";
+        if (statics.hasOwnProperty("noOfLink")) str += (str.length > 5 ? " , " : "") + statics.noOfLink + " links";
+        str += ".</p>";
+        let nos = document.createElement("div");
+        nos.innerHTML = str;
+        tar.appendChild(nos);
     }
     if (statics.hasOwnProperty("keywords")) {
-        toReturn += "<span style=\"font-size: 0.8em;\"><i>" + statics.keywords.join(", ") + "</i></span>";
-        toReturn += "<br><br>"
-    }
+        let can = document.createElement("canvas");
+        WordCloud(can, {
+            list: norm(statics.keywords),
+            color: "#fff",
+            backgroundColor: "#000",
+            minSize: "12pt",
+            weightFactor: 2
+        });
+        tar.appendChild(can)
+    }   
+    
+    
     //tem should have some generated text with it
     //TODOs
     if (statics.hasOwnProperty("sentiment")) {
-        toReturn += "Sentiment: " + statics.sentiment + "<br>";
+        let sent = document.createElement("p");
+        sent.innerHTML = "<b>Sentiment</b>: " + statics.sentiment.toFixed(2);
+        tar.appendChild(sent);
     }
-    return toReturn;
+    
 }
 
 function getLang(obj) {
@@ -333,4 +337,18 @@ function getLang(obj) {
         return e[0].charAt(0).toUpperCase() + e[0].substring(1);
     }).join(", ");
     
+}
+
+function map(n, start1, stop1, start2, stop2) {
+    return ((n - start1) / (stop1 - start1) * (stop2 - start2) + start2);
+}
+
+function norm(raw) {
+    let top = raw[0][1];
+    let bottom = raw[raw.length - 1][1];
+    let tor = [];
+    raw.forEach(it => {
+        tor.push([it[0], map(it[1], top, bottom, 30, 15)]);
+    });
+    return tor;
 }
