@@ -39,7 +39,7 @@ export async function isOnlineNow(url, debug) {
         }
         let sta = resp.status.toString();
         if (debug) console.log("Status code for " + url + " is " + sta);
-        if (/^[45][0-9][0-9]$/.test(sta)) return false;
+        if (/^[345][0-9][0-9]$/.test(sta)) return false;
         // get rid of for sale pages
         let data = resp.data;
         let title = data.match(/<title[^>]*>([^<]+)<\/title>/)[0];
