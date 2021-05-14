@@ -300,30 +300,43 @@ function staticsToInnerHTML(statics, tar) {
         nos.innerHTML = str;
         tar.appendChild(nos);
     }
+    if (statics.hasOwnProperty("sentiment")) {
+        let num = statics.sentiment;
+        let sent = document.createElement("p");
+        sent.innerHTML = "And a "
+        if (num < - 0.5) {
+            sent.innerHTML += "<i>very negative<i>";
+        } else if (num < -0.2) {
+            sent.innerHTML += "<i>quite negative<i>";
+        } else if (num < -0.05) {
+            sent.innerHTML += "<i>a bit negative<i>";
+        } else if (num < 0.05) {
+            sent.innerHTML += "<i>neutral<i>";
+        } else if (num < 0.2) {
+            sent.innerHTML += "<i>a bit positive<i>";
+        } else if (num < 0.5) {
+            sent.innerHTML += "<i>quite positive<i>";
+        } else {
+            sent.innerHTML += "<i>very positive<i>";
+        }
+        sent.innerHTML += " attitude."
+        tar.appendChild(sent);
+    }
     if (statics.hasOwnProperty("keywords") && statics.keywords.length > 0) {
         let can = document.createElement("canvas");
         can.setAttribute("class", "wordcloud");
-        can.width = 300;
-        can.height = 200;
+        can.width = 480;
+        can.height = 360;
         WordCloud(can, {
             list: norm(statics.keywords),
             fontFamily: "Modern Antiqua",
             color: "#fff",
             backgroundColor: "#000",
             minSize: "12pt",
-            weightFactor: 2
+            weightFactor: 4
         });
         tar.appendChild(can)
     }   
-    
-    
-    //tem should have some generated text with it
-    //TODOs
-    if (statics.hasOwnProperty("sentiment")) {
-        let sent = document.createElement("p");
-        sent.innerHTML = "<b>Sentiment</b>: " + statics.sentiment.toFixed(2);
-        tar.appendChild(sent);
-    }
     
 }
 
@@ -372,7 +385,7 @@ function norm(raw) {
     let same;
     let tor = [];
     raw.forEach(it => {
-        tor.push([it[0], map(it[1], top, bottom, 30, 15)]);
+        tor.push([it[0], map(it[1], top, bottom, 30, 10)]);
     });
     return tor;
 }

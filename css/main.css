@@ -165,12 +165,11 @@ html,body{
 }
 
 .similarity{
-    padding-top: 30px;
-    font-size: 18pt;
-    padding-left: 30px;
-    text-align: left;
+    padding-top: 80px;
+    font-size: 20pt;
+    text-align: center;
     margin: auto;
-    width: 80%;
+    width: 60%;
 }
 
 .madetime{
