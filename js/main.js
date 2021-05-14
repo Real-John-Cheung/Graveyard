@@ -289,6 +289,7 @@ function staticsToInnerHTML(statics, tar) {
         can.height = 200;
         WordCloud(can, {
             list: norm(statics.keywords),
+            fontFamily: "Modern Antiqua",
             color: "#fff",
             backgroundColor: "#000",
             minSize: "12pt",
