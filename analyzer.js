@@ -94,7 +94,7 @@ export function analyze(data) {
                 return b[0].length - a[0].length; // if same frq sort by word length
             });
             //console.log(sortable);
-            let first5 = sortable.slice(0, Math.min(sortable.length, 8));
+            let first5 = sortable.slice(0, Math.min(sortable.length, 12));
             keywords = first5;
         }
     }
