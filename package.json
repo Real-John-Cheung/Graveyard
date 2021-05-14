@@ -23,6 +23,7 @@
     "jsdom": "^16.5.3",
     "langdetect": "^0.2.1",
     "languagedetect": "^2.0.0",
+    "minhash": "^0.0.9",
     "natural": "^5.0.3",
     "novel-segment": "^2.7.58",
     "parse": "^3.2.0",

@@ -3,6 +3,7 @@ import { isOnlineNow, timeTravel } from "./findDeadSite.js"
 import { analyze } from "./analyzer.js"
 import { tweetNew } from "./twitterBot.js"
 import axios from 'axios'
+import { Minhash } from "minhash"
 
 // if (process.env.B4A_APPID === undefined || process.env.B4A_RESTAPIKEY === undefined) {
 //     let m = await import('./env.js');
@@ -52,10 +53,25 @@ async function confirmIfDead(url, skipOnlineCheck) {
     t.domain = url.trim().replace(/http[s]?:\/\//, "").replace(/\/,*$/, "");
     t.first.statics = analyze(t.first.data);
     t.last.statics = analyze(t.last.data);
+    if (t.first.statics && t.last.statics && t.first.statics.words && t.last.statics.words) {
+        let f = t.first.statics.words;
+        let l = t.last.statics.words;
+        if (!f || !l || f.length === 0 || l.length === 0) {
+        }else {
+            let mf = new Minhash();
+            let ml = new Minhash();
+            f.forEach(w => mf.update(w));
+            l.forEach(w => ml.update(w));
+            if (mf.jaccard(ml) !== undefined) t.similarity = mf.jaccard(ml);
+        }
+
+    }
 
     //delete data field to save db place
     delete t.first.data
     delete t.last.data
+    delete t.first.statics.words
+    delete t.last.statics.words
 
     return t;
 }
