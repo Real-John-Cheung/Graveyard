@@ -35,9 +35,12 @@ function hideGravestoneDetail(ids) {
 
 // generate the website
 $(document).ready(() => {
+    //make sure all fonts loaded 
     document.fonts.load("12pt 'Benny Harvey RIP'").then(() => {
-        document.fonts.ready.then(getJson("./test.json"));// local
-        //document.fonts.ready.then(fetchJSON("test")); // from database
+        document.fonts.load("20pt 'Modern Antiqua'").then(() => {
+            document.fonts.ready.then(getJson("./test.json"));// local
+            //document.fonts.ready.then(fetchJSON("test")); // from database
+        });
     });
 });
 
@@ -226,13 +229,28 @@ function createGraveyard(objs, debug) {
         dsta.setAttribute("class", "statics");
         staticsToInnerHTML(obj.last.statics, dsta);
         dc.appendChild(dsta);
+        //similarity
+        if (obj.similarity && obj.similarity > 0) {
+            let par = (obj.similarity * 100).toFixed(2);
+            let similarity = document.createElement("p");
+            similarity.setAttribute("class", "similarity");
+            if (par > 75) {
+                //TODOs use context free grammar?
+                similarity.innerText = "It didn't change much through its whole life. The first image of it and the last image of it are " + par + "% similar."
+            } else if (par > 50) {
+                similarity.innerText = "It changed a lot in its time. But " + par + "% of the content in its last image is in its first image.";
+            } else if (par > 25) {
+                similarity.innerText = "It might come through bit events in its life. " + (100 - par) + "% of the content in its last image is different from what it looked like when it is born.";
+            } else {
+                similarity.innerText = "It became totally different at some point in its time. Only " + par + "% of the content in its last image is kept in its last image";
+            }
+            dc.appendChild(similarity)
+        }
         //madetime
         let madetime = document.createElement("p");
         madetime.setAttribute("class", "madetime");
         madetime.innerHTML = "Forever memorized<br> - " + processTime(obj.time);
         dc.appendChild(madetime);
-        //TODOs
-
         //final
         d.appendChild(dc);
         $("body").append(d);
