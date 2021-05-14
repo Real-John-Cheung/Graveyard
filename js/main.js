@@ -333,7 +333,8 @@ function staticsToInnerHTML(statics, tar) {
             color: "#fff",
             backgroundColor: "#000",
             minSize: "12pt",
-            weightFactor: 4
+            weightFactor: 4,
+            shrinkToFit: true
         });
         tar.appendChild(can)
     }   
