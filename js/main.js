@@ -284,6 +284,9 @@ function staticsToInnerHTML(statics, tar) {
     }
     if (statics.hasOwnProperty("keywords") && statics.keywords.length > 0) {
         let can = document.createElement("canvas");
+        can.setAttribute("class", "wordcloud");
+        can.width = 300;
+        can.height = 200;
         WordCloud(can, {
             list: norm(statics.keywords),
             color: "#fff",

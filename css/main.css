@@ -123,6 +123,7 @@ html,body{
     padding-left: 20px;
     width: 50%;
     margin: auto;
+    word-break: break-all;
 }
 
 .detailFingerPrint{
@@ -212,7 +213,7 @@ html,body{
 #main {
     display: block;
     margin: auto;
-    max-width: 80%;
+    max-width: min(80%, 1100px);
     padding-top: 50px;
     padding-bottom: 30px;
 }
