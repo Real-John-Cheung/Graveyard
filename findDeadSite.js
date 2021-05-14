@@ -1,6 +1,6 @@
 import axios from "axios"
 import iconv from "iconv-lite"
-const DOMAINSELLER = ['epik', 'bluehost', 'godaddy', 'network solution', "hostgator", 'namecheap', 'dreamhost', 'buydomains'];
+const DOMAINSELLER = ['epik', 'bluehost', 'godaddy', 'network solution', "hostgator", 'namecheap', 'dreamhost', 'buydomains', "biix"];
 
 
 const isForSale = function (title, domain) {

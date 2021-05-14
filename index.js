@@ -1,6 +1,7 @@
 import createFingerPrint from "./fingerPrint.js"
 import { isOnlineNow, timeTravel } from "./findDeadSite.js"
 import { analyze } from "./analyzer.js"
+import { tweetNew } from "./twitterBot.js"
 import axios from 'axios'
 
 // if (process.env.B4A_APPID === undefined || process.env.B4A_RESTAPIKEY === undefined) {
@@ -17,7 +18,7 @@ import axios from 'axios'
 //         }
 //     }
 //     try {
-//         const resp = await axios.get('https://internetgraveyard.b4a.io/classes/raw', config);
+//         const resp = await axios.get('', config);
 //         if (resp !== undefined) {
 //             if (resp.status.toString() === "200") return resp.data;
 //             return undefined;
@@ -73,7 +74,8 @@ async function createTestJSON(raw) {
         "Black-Tip.top",
         "druskabydaisy.com",
         "JazzWorld.ch",
-        "Milk.xyz"]
+        "Milk.xyz",
+        "ra3e.com"]
     let a = [];
     for (let i = 0; i < dl.length; i ++) {
         let o = await confirmIfDead(dl[i], 1);
