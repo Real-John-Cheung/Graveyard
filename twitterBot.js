@@ -25,9 +25,14 @@ export async function tweetNew(obj, media) {
         //? add media_ids to opts
     }
     const tweet = await client.post("statuses/update", opts).then((resp) => {
-        if (resp.id) console.log("Success, tweet id: " + resp.id_str);
+        if (resp.id) {
+            console.log("Success, tweet id: " + resp.id_str);
+            return true
+        }
+        console.log("Fail to tweet, resp: ", resp);
+        return false;
     }, (e) => {
-        console.log("Fail to tweet, err:", e);
+        console.log("Fail to tweet, err: ", e);
     });
     return tweet ? true : false;
 }
