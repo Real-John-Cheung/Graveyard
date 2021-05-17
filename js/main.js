@@ -191,7 +191,7 @@ function createGraveyard(objs, debug) {
         //lang
         let siteLang = getLang(obj);
         if (siteLang !== undefined) {
-            domain.innerHTML += "<br><span style=\"font-size: small;\">Major Language: "+siteLang+"</span><br>"
+            domain.innerHTML += "<br><span style=\"font-size: medium;\">Major Language: "+siteLang+"</span><br>"
         }
         icondomainwrapper.appendChild(domain);
         dc.appendChild(icondomainwrapper);
