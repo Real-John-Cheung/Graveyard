@@ -174,14 +174,32 @@ function createGraveyard(objs, debug) {
         detailIcon.width = 160;
         detailIcon.height = 160;
         dictx = detailIcon.getContext("2d");
+        // dictx.strokeStyle = "#fff";
+        // dictx.lineWidth = 2;
+        // dictx.beginPath();
+        // dictx.arc(detailIcon.width / 2, detailIcon.height / 2, detailIcon.width / 2, 0, 2 * Math.PI);
+        // dictx.stroke();
         iconInfo.forEach((c, i) => {
             dictx.fillStyle = `rgb(${c}, ${c}, ${c})`;
-            let raw = Math.floor(i / 8);
+            let row = Math.floor(i / 8);
             let col = i % 8;
             let a = detailIcon.width / 8;
-            let x = raw * a;
+            let x = row * a;
             let y = col * a;
             dictx.fillRect(x, y, a, a);
+            // if (i < 32) {
+            //     dictx.strokeStyle = `rgb(${c}, ${c}, ${c})`;
+            //     dictx.beginPath();
+            //     dictx.moveTo(detailIcon.width / 2, 0);
+            //     dictx.quadraticCurveTo((detailIcon.width / 2) + (detailIcon.width / 16) * (i - 16), detailIcon.height / 2, detailIcon.width / 2, detailIcon.height);
+            //     dictx.stroke();
+            // } else {
+            //     dictx.strokeStyle = `rgb(${c}, ${c}, ${c})`;
+            //     dictx.beginPath();
+            //     dictx.moveTo(0, detailIcon.height / 2);
+            //     dictx.quadraticCurveTo(detailIcon.width / 2, (detailIcon.height / 2) + ( (detailIcon.height / 16) * (i - 48)), detailIcon.width, detailIcon.height / 2);
+            //     dictx.stroke();
+            // }
         });
         icondomainwrapper.appendChild(detailIcon);
         //domain
