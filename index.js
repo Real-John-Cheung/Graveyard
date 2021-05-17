@@ -31,3 +31,4 @@ async function createTestJSON(raw) {
 }
 
 findDeath();
+finalCheck();

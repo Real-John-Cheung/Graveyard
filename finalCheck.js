@@ -3,22 +3,26 @@ import { Minhash } from "minhash"
 import { tweetNew } from "./twitterBot.js"
 import { analyze } from "./analyzer.js"
 import createFingerPrint from "./fingerPrint.js"
-
+import axios from "axios"
 
 export async function finalCheck() {
     let tbcArr = await getTBC();
+    if (!tbcArr) return undefined;
+    tbcArr = tbcArr.results;
+    if (!tbcArr) return undefined;
     for (let i = 0; i < tbcArr.length; i++) {
         const it = tbcArr[i];
-        const timeCreated = it.createAt;
+        const timeCreated = it.createdAt;
         const timeGap = Date.now() - Date.parse(timeCreated);
-        if ((timeGap / 1000) / 3600 > 20) {
-            // have been 20 hours
+        if ((timeGap / 1000) / 3600 > 10) {
+            // have been 10 hours
             await deleteTBC(it.objectId);
             let gra = await confirmIfDead(it.domain);
             if (gra && typeof gra === 'object') {
                 //valid item
                 let sup = await addGraveList(gra);
                 let sut = await tweetNew(gra);
+                console.log(gra.domain, sup, sut);
                 if (sup && sut) return; // each time it was call, try to get one done
             }
         }
