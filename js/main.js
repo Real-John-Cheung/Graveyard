@@ -39,34 +39,34 @@ $(document).ready(() => {
     document.fonts.load("12pt 'Benny Harvey RIP'").then(() => {
         document.fonts.load("20pt 'Modern Antiqua'").then(() => {
             document.fonts.ready.then(getJson("./test.json"));// local
-            //document.fonts.ready.then(fetchJSON("test")); // from database
+            //document.fonts.ready.then(fetchJSON("graveList")); // from database
         });
     });
 });
 
-// function fetchJSON(cla) {
-//     Parse.initialize('', '') // init client
-//     Parse.serverURL = 'https://parseapi.back4app.com/'
+function fetchJSON(cla) {
+    Parse.initialize('YFNmHwzbtxTmIZW0e1GPVBe23JdBa7trjSoGRcgI', 'kRuZ7KdAoCieYcO8tPGYegh6iDC8puJ6zu1Y5TA8') // init client
+    Parse.serverURL = 'https://parseapi.back4app.com/'
 
-//     const c = Parse.Object.extend(cla);
-//     const q = new Parse.Query(c);
-//     q.find().then((res) => {
-//         let objs = [];
-//         res.forEach(o => {
-//             let no = {};
-//             no.domain = o.get("domain");
-//             no.fingerPrint = o.get("fingerPrint");
-//             no.time = o.get("time");
-//             no.first = o.get("first");
-//             no.last = o.get("last");
-//             objs.push(no);
-//         });
-//         createGraveyard(objs, 1);
-//     }, (err) => {
-//         console.error("Error when fetch data " + err);
-//         handleLoadError();
-//     });
-// }
+    const c = Parse.Object.extend(cla);
+    const q = new Parse.Query(c);
+    q.find().then((res) => {
+        let objs = [];
+        res.forEach(o => {
+            let no = {};
+            no.domain = o.get("domain");
+            no.fingerPrint = o.get("fingerPrint");
+            no.time = o.get("time");
+            no.first = o.get("first");
+            no.last = o.get("last");
+            objs.push(no);
+        });
+        createGraveyard(objs, 1);
+    }, (err) => {
+        console.error("Error when fetch data " + err);
+        handleLoadError();
+    });
+}
 
 function getJson(url) {
     let request = new XMLHttpRequest();
