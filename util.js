@@ -24,7 +24,7 @@ const isForSale = function (title, domain) {
 
 const get = async function(url) {
     try {
-        const resp = await axios.get(url);
+        const resp = await axios.get(url, { timeout: 20000 });
         return resp;
     } catch(err) {
         return undefined;
@@ -42,7 +42,7 @@ export async function isOnlineNow(url, debug) {
         if (/^[345][0-9][0-9]$/.test(sta)) return false;
         // get rid of for sale pages
         let data = resp.data;
-        let title = data.match(/<title[^>]*>([^<]+)<\/title>/)[0];
+        let title = data.match(/<title[^>]*>([^<]+)<\/title>/) ? data.match(/<title[^>]*>([^<]+)<\/title>/)[0] : "";
         title = title.replace(/<[\/]?title>/g, "");
         return !isForSale(title.toLowerCase(), url.replace(/http[s]?:\/\//, "").toLowerCase());
     });

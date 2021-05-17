@@ -67,7 +67,8 @@ async function getTBC() {
         headers: {
             "X-Parse-Application-Id": process.env.B4A_APPID,
             "X-Parse-REST-API-Key": process.env.B4A_RESTAPIKEY
-        }
+        },
+        timeout: 20000
     }
     try {
         const resp = await axios.get(process.env.B4A_ENDPOINT + "TBC", config);
@@ -86,13 +87,15 @@ async function deleteTBC(id) {
     const config = {
         headers: {
             "X-Parse-Application-Id": process.env.B4A_APPID,
-            "X-Parse-REST-API-Key": process.env.B4A_RESTAPIKEY
-        }
+            "X-Parse-REST-API-Key": process.env.B4A_RESTAPIKEY,
+            "X-Parse-Master-Key": process.env.B4A_MASTERKEY
+        },
+        timeout: 20000
     }
     try {
         const resp = await axios.delete(endp, config);
         if (resp.status.toString() === '200') return true;
-        console.log("err in deleting tbc item: ", resp);
+        console.log("err in deleting tbc item: ", resp.headers);
         return;
     } catch (e) {
         console.log("err in deleting tbc item: ", e);
@@ -107,13 +110,15 @@ async function addGraveList(obj) {
         headers: {
             "X-Parse-Application-Id": process.env.B4A_APPID,
             "X-Parse-REST-API-Key": process.env.B4A_RESTAPIKEY,
+            "X-Parse-Master-Key": process.env.B4A_MASTERKEY,
             "Content-Type": "application/json"
-        }
+        },
+        timeout: 20000
     }
     try {
         const resp = await axios.post(endp, item, config);
-        if (resp.status.toString() === '200') return true;
-        console.log("err in adding graveList item: ", resp);
+        if (resp.status.toString() === '201') return true;
+        console.log("err in adding graveList item: ", resp.headers);
         return;
     } catch (error) {
         console.log("err in adding graveList item: ", error);

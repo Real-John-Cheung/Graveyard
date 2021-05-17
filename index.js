@@ -30,4 +30,4 @@ async function createTestJSON(raw) {
 
 }
 
-createTestJSON();
+findDeath();
