@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Internet Graveyard</title>
+    <link rel="icon" href="./res/fav.png">
+    <link rel="preload" href="./css/main.css" as="style">
+    <link rel="stylesheet" href="./css/main.css">
+
+    <script src="./js/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script src="./js/wordcloud2.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/barcodes/JsBarcode.code128.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/rita@2.4.86/dist/rita-micro.js"></script>
+    <!--script src="./js/main.js" type="text/javascript"></script-->
+    <script>
+        function displayAgreement() {
+            document.getElementById("agreement").style.display = "block";
+            document.getElementById("shadow").style.display = "block";
+        }
+
+        function hideAgreement() {
+            document.getElementById("agreement").style.display = "none";
+            document.getElementById("shadow").style.display = "none";
+        }
+    </script>
+    <style>
+        #main a {
+            color: white;
+            text-decoration: underline;
+            text-underline-position: under;
+            transition: all ease-in-out 0.2s;
+        }
+
+        #main a:hover {
+            color: grey;
+            text-decoration: underline;
+            text-decoration-thickness: 3pt;
+        }
+
+        #main {
+            
+            font-size: 16pt;
+        }
+    </style>
+</head>
+
+<body>
+    <!--force load font-->
+    <!-- <div style="font-family: 'Benny Harvey RIP';"> </div> -->
+    <div class="wrapper">
+        <div id="title">
+            <img src="./res/icon@10x.png" width="auto" height="100%" />
+            <a href="./"> Internet Graveyard</a>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div id="navBar">
+            <p><a href="./index.html">Cemetery</a> | <a href="javascript:void(0)"
+                    onclick="displayAgreement()">Agreement</a> | <a href="./about.html">About</a></p>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div id="main">
+            <p style="font-family: 'Syne Mono'">This is the work by a little bot, who create graves to memorized those
+                websites that no longer exist. It works days and nights, but make a grave take it 12 hours, so it can
+                only make two a day. At the same time, there are 250 million sites that are already dead, and this
+                number goes up every minute. The job is never gonna be finished, but the poor little bot still digging,
+                making a grave for every dead site, no matter how small it was and what language it used.</p>
+            <p>To know more, visit <a href="https://johncheung.feedia.co/works-internet-graveyard" ,
+                    target="_blank">this page</a>.</p>
+            <p>Made by <a href="https://johncheung.feedia.co">John C</a></p>
+        </div>
+    </div>
+
+
+    <!-- agreement-->
+    <div id="agreement">
+        <div id="closeAgreement">
+            <a href="javascript:void(0)" onclick="hideAgreement()">close</a>
+        </div>
+        <p style="text-align: center; font-size: 16pt;"><b>Agreement of Internet Graveyard</b></p>
+        <div id="agreementContent">
+            <p><b>1. Definitions</b></p>
+            <p><b>Website</b>: an independent root folder on the Internet that may or may not contain subfolders. In
+                most cases, this points to a primary domain.</p>
+            <p><b>Dead site</b>: a website that once online but no longer accessible now.</p>
+            <p><b>Date of death of a dead site</b>: the day after the date of its last snapshot in the databases.</p>
+            <p><b>Date of birth of a dead site</b>: the date of its earliest snapshot found in the databases.</p>
+            <p><b>The lifespan of a dead site</b>: the time between its date of birth and its date of death.</p>
+            <p><b>2. Description of service</b></p>
+            <p>Internet Graveyard (the graveyard) is the place for those dead sites to rest and be remembered. The
+                Graveyard is managed by an automatic system. Every dead site being memorialized here is identified and
+                selected by the automatic system. The Graveyard holds entries to the records of the dead sites. The
+                links go to various archives, you should check, follow and obey the terms of those archives and any
+                related website.</p>
+            <p><b>3. Terms of the graveyard</b></p>
+            <p>No data of visitors will be collected by the graveyard, but the holders of data and records may have
+                different user policies. Reuse or redistribution of contents of the graveyard itself should be under the
+                same opensource license (GPL-3.0-or-later).</p>
+            <p><b>4. Disclaimer</b></p>
+            <p>All information on the graveyard is collected by an <a
+                    href="https://github.com/Real-John-Cheung/Internet-Graveyard" target="_blank">opensource automatic
+                    system</a> from open databases and the Internet.</p>
+            <p><br><br></p>
+            <p>This agreement is subject to be changed if necessary.</p>
+            <p style="text-align: right;">Last update: 17/5/2021</p>
+        </div>
+    </div>
+    <div id="shadow">
+    </div>
+
+</body>
