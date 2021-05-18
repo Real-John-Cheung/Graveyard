@@ -38,8 +38,8 @@ $(document).ready(() => {
     //make sure all fonts loaded 
     document.fonts.load("12pt 'Benny Harvey RIP'").then(() => {
         document.fonts.load("20pt 'Modern Antiqua'").then(() => {
-            //document.fonts.ready.then(getJson("./test.json"));// local
-            document.fonts.ready.then(fetchJSON("graveList")); // from database
+            document.fonts.ready.then(getJson("./test.json"));// local
+            //document.fonts.ready.then(fetchJSON("graveList")); // from database
         });
     });
 });
