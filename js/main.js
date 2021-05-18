@@ -38,7 +38,6 @@ $(document).ready(() => {
     //make sure all fonts loaded 
     document.fonts.load("12pt 'Benny Harvey RIP'").then(() => {
         document.fonts.load("20pt 'Modern Antiqua'").then(() => {
-            document.getElementById("loading").parentNode.removeChild(document.getElementById("loading"));
             //document.fonts.ready.then(getJson("./test.json"));// local
             document.fonts.ready.then(fetchJSON("graveList")); // from database
         });
@@ -276,6 +275,7 @@ function createGraveyard(objs, debug) {
         d.appendChild(dc);
         $("body").append(d);
     }
+    document.getElementById("loading").parentNode.removeChild(document.getElementById("loading"));
 }
 
 function handleLoadError() {
