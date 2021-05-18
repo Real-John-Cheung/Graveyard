@@ -38,8 +38,8 @@ $(document).ready(() => {
     //make sure all fonts loaded 
     document.fonts.load("12pt 'Benny Harvey RIP'").then(() => {
         document.fonts.load("20pt 'Modern Antiqua'").then(() => {
-            document.fonts.ready.then(getJson("./test.json"));// local
-            //document.fonts.ready.then(fetchJSON("graveList")); // from database
+            //document.fonts.ready.then(getJson("./test.json"));// local
+            document.fonts.ready.then(fetchJSON("graveList")); // from database
         });
     });
 });
@@ -59,6 +59,7 @@ function fetchJSON(cla) {
             no.time = o.get("time");
             no.first = o.get("first");
             no.last = o.get("last");
+            no.similarity = o.get("similarity");
             objs.push(no);
         });
         createGraveyard(objs, 1);
