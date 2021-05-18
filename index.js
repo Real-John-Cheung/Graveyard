@@ -30,5 +30,9 @@ async function createTestJSON(raw) {
 
 }
 
-findDeath();
-finalCheck();
+try {
+    findDeath();
+    finalCheck();
+} catch (e) {
+    console.log(e.message);
+}
