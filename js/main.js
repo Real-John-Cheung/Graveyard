@@ -38,8 +38,9 @@ $(document).ready(() => {
     //make sure all fonts loaded 
     document.fonts.load("12pt 'Benny Harvey RIP'").then(() => {
         document.fonts.load("20pt 'Modern Antiqua'").then(() => {
-            document.fonts.ready.then(getJson("./test.json"));// local
-            //document.fonts.ready.then(fetchJSON("graveList")); // from database
+            document.getElementById("loading").parentNode.removeChild(document.getElementById("loading"));
+            //document.fonts.ready.then(getJson("./test.json"));// local
+            document.fonts.ready.then(fetchJSON("graveList")); // from database
         });
     });
 });
@@ -91,7 +92,8 @@ function getJson(url) {
 function createGraveyard(objs, debug) {
     if (debug) console.log("create graveyard according to following data", objs);
     //if (debug) console.log(document.fonts)
-    objs.forEach((obj, i) => {
+    for (let i = objs.length - 1; i > -1; i--){
+        const obj = objs[i];
         //create each gravestone
         //infos
         let id = i;
@@ -273,7 +275,7 @@ function createGraveyard(objs, debug) {
         //final
         d.appendChild(dc);
         $("body").append(d);
-    });
+    }
 }
 
 function handleLoadError() {
