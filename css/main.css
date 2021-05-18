@@ -52,8 +52,8 @@ html,body{
 .gravestone{
     font-family: 'Benny Harvey RIP';
     margin: auto;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
     padding-bottom: 40px;
     width: 180px;
     display: inline-block;
@@ -221,7 +221,7 @@ html,body{
 #main {
     display: block;
     margin: auto;
-    max-width: min(80%, 1100px);
+    max-width: min(80%, 1040px);
     padding-top: 50px;
     padding-bottom: 30px;
 }
