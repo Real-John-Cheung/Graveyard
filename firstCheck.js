@@ -1,12 +1,12 @@
 import { isOnlineNow, timeTravel } from './util.js'
 import axios from 'axios'
-if (process.env.B4A_APPID === undefined || process.env.B4A_RESTAPIKEY === undefined || process.env.B4A_ENDPOINT) {
-    let m = await import('./env.js');
-    process.env.B4A_APPID = m.B4A_CONFIG.appid;
-    process.env.B4A_RESTAPIKEY = m.B4A_CONFIG.restapikey;
-    process.env.B4A_MASTERKEY = m.B4A_CONFIG.masterkey;
-    process.env.B4A_ENDPOINT = m.B4A_CONFIG.endpoint;
-}
+// if (process.env.B4A_APPID === undefined || process.env.B4A_RESTAPIKEY === undefined || process.env.B4A_ENDPOINT) {
+//     let m = await import('./env.js');
+//     process.env.B4A_APPID = m.B4A_CONFIG.appid;
+//     process.env.B4A_RESTAPIKEY = m.B4A_CONFIG.restapikey;
+//     process.env.B4A_MASTERKEY = m.B4A_CONFIG.masterkey;
+//     process.env.B4A_ENDPOINT = m.B4A_CONFIG.endpoint;
+// }
 
 export async function findDeath() {
     const limit = 20;

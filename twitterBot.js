@@ -1,13 +1,13 @@
 import Twitter from 'twitter-lite'
 
-if (process.env.CONSUMER_KEY === undefined || process.env.CONSUMER_SECRET === undefined
-|| process.env.ACCESS_TOKEN_KEY === undefined || process.env.ACESS_TOKEN_SECRET === undefined) {
-    let m = await import('./env.js');
-    process.env.CONSUMER_KEY = m.TWITTER_CONFIG.CONSUMER_KEY;
-    process.env.CONSUMER_SECRET = m.TWITTER_CONFIG.CONSUMER_SECRET;
-    process.env.ACCESS_TOKEN_KEY = m.TWITTER_CONFIG.ACCESS_TOKEN_KEY;
-    process.env.ACESS_TOKEN_SECRET = m.TWITTER_CONFIG.ACCESS_TOKEN_SECRET;
-}
+// if (process.env.CONSUMER_KEY === undefined || process.env.CONSUMER_SECRET === undefined
+// || process.env.ACCESS_TOKEN_KEY === undefined || process.env.ACESS_TOKEN_SECRET === undefined) {
+//     let m = await import('./env.js');
+//     process.env.CONSUMER_KEY = m.TWITTER_CONFIG.CONSUMER_KEY;
+//     process.env.CONSUMER_SECRET = m.TWITTER_CONFIG.CONSUMER_SECRET;
+//     process.env.ACCESS_TOKEN_KEY = m.TWITTER_CONFIG.ACCESS_TOKEN_KEY;
+//     process.env.ACESS_TOKEN_SECRET = m.TWITTER_CONFIG.ACCESS_TOKEN_SECRET;
+// }
 
 const client = new Twitter({
     consumer_key: process.env.CONSUMER_KEY, 
