@@ -220,6 +220,7 @@ html,body{
 
 #main {
     display: block;
+    text-align: center;
     margin: auto;
     max-width: min(80%, 1200px);
     padding-top: 50px;

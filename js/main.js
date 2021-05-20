@@ -279,6 +279,7 @@ function createGraveyard(objs, debug) {
 }
 
 function handleLoadError() {
+    document.getElementById("loading").parentNode.removeChild(document.getElementById("loading"));
     $("#main").append("<p style=\"color: rgb(165,3,18); margin: auto;\"><br><br><b><i>Fail to load the data, please try to refresh the page.</i></b><p>");
 }
 
