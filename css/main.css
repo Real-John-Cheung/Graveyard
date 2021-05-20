@@ -183,7 +183,7 @@ html,body{
 
 #title{
     padding-top: 20px;
-    width: "80%";
+    width: auto;
     margin: auto;
     height: 15vmin;
     font-family: 'Duerer Gotisch';
