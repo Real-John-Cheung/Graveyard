@@ -38,8 +38,8 @@ $(document).ready(() => {
     //make sure all fonts loaded 
     document.fonts.load("12pt 'Benny Harvey RIP'").then(() => {
         document.fonts.load("20pt 'Modern Antiqua'").then(() => {
-            document.fonts.ready.then(getJson("./test.json"));// local
-            //document.fonts.ready.then(fetchJSON("graveList")); // from database
+            //document.fonts.ready.then(getJson("./test.json"));// local
+            document.fonts.ready.then(fetchJSON("graveList")); // from database
         });
     });
 });
@@ -352,7 +352,7 @@ function staticsToInnerHTML(statics, tar) {
         WordCloud(can, {
             list: norm(statics.keywords),
             fontFamily: "Modern Antiqua",
-            color: "#fff",
+            color: deteminColor,
             backgroundColor: "#000",
             minSize: "12pt",
             weightFactor: 4,
@@ -411,4 +411,10 @@ function norm(raw) {
         tor.push([it[0], map(it[1], top, bottom, 30, 10)]);
     });
     return tor;
+}
+
+function deteminColor(word, weight, fontSize, distance, theta) {
+    let c = map(weight, 30, 10, 255, 150);
+    c = Math.round(c);
+    return `rgb(${c},${c},${c})`;
 }
