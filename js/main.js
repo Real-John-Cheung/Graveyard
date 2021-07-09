@@ -50,6 +50,7 @@ function fetchJSON(cla) {
 
     const c = Parse.Object.extend(cla);
     const q = new Parse.Query(c);
+    q.setLimit(9999);
     q.find().then((res) => {
         let objs = [];
         res.forEach(o => {
