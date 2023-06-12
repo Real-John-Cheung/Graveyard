@@ -1,3 +1,4 @@
+
 const monthTable = {
     "01": "JAN",
     "02": "FEB",
@@ -12,6 +13,8 @@ const monthTable = {
     "11": "NOV",
     "12": "DEC"
 }
+
+let bookmark = 0;
 
 function displayAgreement() {
     document.getElementById("agreement").style.display = "block";
@@ -51,6 +54,7 @@ function fetchJSON(cla) {
     const c = Parse.Object.extend(cla);
     const q = new Parse.Query(c);
     q.limit(100);
+    q.skip(bookmark);
     q.find().then((res) => {
         let objs = [];
         res.forEach(o => {
@@ -64,6 +68,7 @@ function fetchJSON(cla) {
             objs.push(no);
         });
         createGraveyard(objs, 1);
+        bookmark += 100;
     }, (err) => {
         console.error("Error when fetch data " + err);
         handleLoadError();
@@ -276,7 +281,8 @@ function createGraveyard(objs, debug) {
         d.appendChild(dc);
         $("body").append(d);
     }
-    document.getElementById("loading").parentNode.removeChild(document.getElementById("loading"));
+    if (document.getElementById("loading")) document.getElementById("loading").parentNode.removeChild(document.getElementById("loading"));
+    document.getElementById("loadMore").classList.remove("hidden");
 }
 
 function handleLoadError() {
@@ -418,4 +424,9 @@ function deteminColor(word, weight, fontSize, distance, theta) {
     let c = map(weight, 30, 10, 255, 150);
     c = Math.round(c);
     return `rgb(${c},${c},${c})`;
+}
+
+function loadMore() {
+    //console.log("loadMore");
+    fetchJSON("graveList");
 }

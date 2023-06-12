@@ -280,4 +280,18 @@ html,body{
 	opacity: .60;
 }
 
+#loadMore{
+    margin: auto;
+    pad: 10px;
+}
+
+#loadMore:hover{
+    color: #EEE;
+    cursor: pointer;
+}
+
+.hidden{
+    display: none;
+}
+
 
